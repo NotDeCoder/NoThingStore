@@ -27,10 +27,6 @@ namespace NoThingStore.Models
         [Display(Name = "Is Available")]
         public bool IsAvailable { get; set; }
 
-        //[Display(Name = "Product Images")]
-        //public List<string> Images { get; set; }
-
-
         public abstract Product GenerateSlug();
     }
 

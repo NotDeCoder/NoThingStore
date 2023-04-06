@@ -15,6 +15,8 @@ namespace NoThingStore.Data
         public DbSet<EBook> EBooks { get; set; }
         public DbSet<Software> Softwares { get; set; }
         public DbSet<VideoCourse> VideoCourses { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

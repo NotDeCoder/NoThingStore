@@ -1,0 +1,35 @@
+﻿@model NoThingStore.Models.ShoppingCart
+
+<h1>Cart</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Price</td>
+                <td>@item.Quantity</td>
+                <td><a href="@Url.Action("RemoveFromCart", "Cart", new { productId = item.ProductId })">Remove</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <p>Total: @Model.GetTotalPrice()</p>
+    <a href="@Url.Action("ClearCart", "Cart")">Clear Cart</a>
+</div>
+
+<div>
+    <a href="@Url.Action("Index", "Home")">Continue Shopping</a>
+    <a href="@Url.Action("Index", "Checkout")">Checkout</a>
+</div>
