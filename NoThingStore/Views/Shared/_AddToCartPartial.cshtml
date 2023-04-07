@@ -1,0 +1,7 @@
+﻿<form action="/Cart/AddToCart" method="post">
+    <input type="hidden" name="productId" value="@Model.Id" />
+    <input type="hidden" name="name" value="@Model.Name" />
+    <input type="hidden" name="price" value="@Model.Price" />
+    <input type="number" name="quantity" value="1" min="1" max="100" />
+    <button type="submit">Add to Cart</button>
+</form>

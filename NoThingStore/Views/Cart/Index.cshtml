@@ -2,7 +2,7 @@
 
 <h1>Cart</h1>
 
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>Product Name</th>
@@ -15,9 +15,15 @@
         @foreach (var item in Model.Items)
         {
             <tr>
-                <td>@item.Name</td>
-                <td>@item.Price</td>
-                <td>@item.Quantity</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
                 <td><a href="@Url.Action("RemoveFromCart", "Cart", new { productId = item.ProductId })">Remove</a></td>
             </tr>
         }

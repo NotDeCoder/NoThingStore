@@ -29,7 +29,7 @@
 
         public decimal GetTotalPrice()
         {
-            return Items.Sum(i => i.Price);
+            return Items.Sum(i => i.Price * i.Quantity);
         }
 
         public void Clear()
