@@ -1,10 +1,10 @@
-﻿using Slugify;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace NoThingStore.Models
 {
     public class ActivationKey : Product
     {
+
         [Required(ErrorMessage = "The Key field is required.")]
         [StringLength(100, MinimumLength = 4, ErrorMessage = "The Key field must be between 4 and 100 characters.")]
         public string Key { get; set; }
@@ -25,12 +25,5 @@ namespace NoThingStore.Models
         [Required(ErrorMessage = "The HowToActivate field is required.")]
         [StringLength(500, MinimumLength = 10, ErrorMessage = "The HowToActivate field must be between 10 and 500 characters.")]
         public string HowToActivate { get; set; }
-
-        public override ActivationKey GenerateSlug()
-        {
-            SlugHelper helper = new SlugHelper();
-            Slug = helper.GenerateSlug(Name.Trim().ToLower());
-            return this;
-        }
     }
 }

@@ -1,0 +1,26 @@
+﻿@model Order
+
+<h1>Edit Order</h1>
+
+<form asp-action="EditOrder" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label asp-for="UserId">User Id:</label>
+        <input asp-for="UserId" />
+    </div>
+    <div>
+        <label asp-for="Email">Email:</label>
+        <input asp-for="Email" />
+    </div>
+    <div>
+        <label asp-for="OrderDate">Order Date:</label>
+        <input asp-for="OrderDate" />
+    </div>
+    <div>
+        <label asp-for="Total">Total:</label>
+        <input asp-for="Total" />
+    </div>
+
+    <button type="submit">Save</button>
+</form>

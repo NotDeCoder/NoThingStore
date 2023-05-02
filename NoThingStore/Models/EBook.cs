@@ -1,10 +1,10 @@
-﻿using Slugify;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace NoThingStore.Models
 {
     public class EBook : Product
     {
+
         [Required(ErrorMessage = "The MegabyteSize field is required.")]
         [Range(1, uint.MaxValue, ErrorMessage = "The MegabyteSize field must be a positive integer.")]
         public uint MegabyteSize { get; set; }
@@ -23,12 +23,5 @@ namespace NoThingStore.Models
 
         [Url(ErrorMessage = "The DownloadUrl field must be a valid URL.")]
         public string DownloadUrl { get; set; }
-
-        public override EBook GenerateSlug()
-        {
-            SlugHelper helper = new SlugHelper();
-            Slug = helper.GenerateSlug(Name.Trim().ToLower());
-            return this;
-        }
     }
 }

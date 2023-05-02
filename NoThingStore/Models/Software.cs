@@ -1,5 +1,4 @@
-﻿using Slugify;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace NoThingStore.Models
 {
@@ -23,13 +22,5 @@ namespace NoThingStore.Models
 
         [Url(ErrorMessage = "The DownloadUrl field must be a valid URL.")]
         public string DownloadUrl { get; set; }
-
-        public override Software GenerateSlug()
-        {
-            SlugHelper helper = new SlugHelper();
-            Slug = helper.GenerateSlug(Name.Trim().ToLower());
-            return this;
-        }
     }
-
 }

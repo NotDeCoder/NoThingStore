@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using NoThingStore.Data;
+using NoThingStore.Data.Repositories.Interfaces;
 using NoThingStore.Models;
 using NoThingStore.Services.Interfaces;
 
@@ -7,52 +8,46 @@ namespace NoThingStore.Services.Implementations
 {
     public class OrderService : IOrderService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IOrderRepository _orderRepository;
 
-        public OrderService(ApplicationDbContext context)
+        public OrderService(IOrderRepository orderRepository)
         {
-            _context = context;
+            _orderRepository = orderRepository;
         }
 
-        public async Task<Order> CreateOrderAsync(string userId, string email, ShoppingCart cart)
+        public async Task<IEnumerable<Order>> GetAllOrdersAsync()
         {
-            // Calculate the total price of the order
-            decimal totalPrice = cart.GetTotalPrice();
-
-            // Create a new Order object
-            var order = new Order
-            {
-                UserId = userId,
-                OrderDate = DateTime.Now,
-                Email = email,
-                TotalPrice = totalPrice
-            };
-
-            // Add the order to the context
-            _context.Orders.Add(order);
-
-            // Create OrderItem objects for each cart item and add them to the order
-            foreach (var cartItem in cart.Items)
-            {
-                var orderItem = new OrderItem
-                {
-                    ProductId = cartItem.ProductId,
-                    Quantity = cartItem.Quantity,
-                    Price = cartItem.Price
-                };
-
-                order.OrderItems.Add(orderItem);
-            }
-
-            // Save changes to the context
-            await _context.SaveChangesAsync();
-
-            return order;
+            return await _orderRepository.GetAllOrdersAsync();
         }
 
-        public Task SendOrderConfirmationEmail(Order order)
+        public async Task<Order> GetOrderByIdAsync(int id)
         {
-            return Task.CompletedTask;
+            return await _orderRepository.GetOrderByIdAsync(id);
+        }
+
+        public async Task<IEnumerable<Order>> GetOrdersByUserIdAsync(string userId)
+        {
+            return await _orderRepository.GetOrdersByUserIdAsync(userId);
+        }
+
+        public async Task CreateOrderAsync(Order order)
+        {
+            await _orderRepository.CreateOrderAsync(order);
+        }
+
+        public async Task UpdateOrderAsync(Order order)
+        {
+            await _orderRepository.UpdateOrderAsync(order);
+        }
+
+        public async Task DeleteOrderAsync(Order order)
+        {
+            await _orderRepository.DeleteOrderAsync(order);
+        }
+
+        public async Task<Product> GetProductByIdAsync(int id)
+        {
+            return await _orderRepository.GetProductByIdAsync(id);
         }
     }
 }

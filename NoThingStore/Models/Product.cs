@@ -1,20 +1,38 @@
 ﻿using Slugify;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NoThingStore.Models
 {
     public abstract class Product
     {
+        private readonly ISlugHelper _slugHelper;
+
+        public Product()
+        {
+            _slugHelper = new SlugHelper();
+        }
+
         [Key]
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; } = -1;
 
         [Required(ErrorMessage = "The Name field is required.")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "The Name field must be between 3 and 100 characters.")]
-        public string Name { get; set; }
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                Slug = _slugHelper.GenerateSlug(value);
+            }
+        }
 
         [Required(ErrorMessage = "The Slug field is required.")]
         [StringLength(100, MinimumLength = 3, ErrorMessage = "The Slug field must be between 3 and 100 characters.")]
-        public string Slug { get; set; }
+        public string Slug { get; private set; }
 
         [Required(ErrorMessage = "The Description field is required.")]
         [StringLength(500, MinimumLength = 10, ErrorMessage = "The Description field must be between 10 and 500 characters.")]
@@ -26,8 +44,5 @@ namespace NoThingStore.Models
 
         [Display(Name = "Is Available")]
         public bool IsAvailable { get; set; }
-
-        public abstract Product GenerateSlug();
     }
-
 }

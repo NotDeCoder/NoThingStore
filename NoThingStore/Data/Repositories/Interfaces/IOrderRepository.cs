@@ -1,8 +1,8 @@
 ﻿using NoThingStore.Models;
 
-namespace NoThingStore.Services.Interfaces
+namespace NoThingStore.Data.Repositories.Interfaces
 {
-    public interface IOrderService
+    public interface IOrderRepository
     {
         Task<IEnumerable<Order>> GetAllOrdersAsync();
         Task<Order> GetOrderByIdAsync(int id);
@@ -10,6 +10,6 @@ namespace NoThingStore.Services.Interfaces
         Task CreateOrderAsync(Order order);
         Task UpdateOrderAsync(Order order);
         Task DeleteOrderAsync(Order order);
-        Task<Product> GetProductByIdAsync(int productId);
+        Task<Product> GetProductByIdAsync(int id);
     }
 }

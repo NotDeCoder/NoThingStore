@@ -11,6 +11,7 @@ namespace NoThingStore.Data
         {
             Database.EnsureCreated();
         }
+        public DbSet<Product> Products { get; set; }
         public DbSet<ActivationKey> ActivationKeys { get; set; }
         public DbSet<EBook> EBooks { get; set; }
         public DbSet<Software> Softwares { get; set; }
@@ -21,6 +22,14 @@ namespace NoThingStore.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Use TPC inheritance strategy
+
+            modelBuilder.Entity<Product>().ToTable("Products");
+            modelBuilder.Entity<ActivationKey>().ToTable("ActivationKeys");
+            modelBuilder.Entity<EBook>().ToTable("EBooks");
+            modelBuilder.Entity<Software>().ToTable("Softwares");
+            modelBuilder.Entity<VideoCourse>().ToTable("VideoCourses");
 
             modelBuilder.Entity<ActivationKey>().HasData(new List<ActivationKey>
             {
@@ -36,7 +45,7 @@ namespace NoThingStore.Data
                     ProgramVersion = "2019",
                     ExpirationDate = new DateTime(2024, 12, 31),
                     HowToActivate = "Enter the key during the installation process",
-                }.GenerateSlug(),
+                },
                 new ActivationKey()
                 {
                     Id = 2,
@@ -49,7 +58,7 @@ namespace NoThingStore.Data
                     ProgramVersion = "2022",
                     ExpirationDate = new DateTime(2023, 6, 30),
                     HowToActivate = "Sign in with your Adobe ID and enter the key in the 'Redeem a product code' section",
-                }.GenerateSlug(),
+                },
                 new ActivationKey()
                 {
                     Id = 3,
@@ -62,7 +71,7 @@ namespace NoThingStore.Data
                     ProgramVersion = "Pro",
                     ExpirationDate = new DateTime(2030, 12, 31),
                     HowToActivate = "Enter the key during the installation process",
-                }.GenerateSlug()
+                }
             });
 
             modelBuilder.Entity<EBook>().HasData(new List<EBook>
@@ -79,7 +88,7 @@ namespace NoThingStore.Data
                     Authorship = "Eric Ries",
                     Format = "PDF",
                     CountOfPages = 320
-                }.GenerateSlug(),
+                },
                 new EBook()
                 {
                     Id = 5,
@@ -92,7 +101,7 @@ namespace NoThingStore.Data
                     Authorship = "Dan Brown",
                     Format = "EPUB",
                     CountOfPages = 689
-                }.GenerateSlug(),
+                },
                 new EBook()
                 {
                     Id = 6,
@@ -105,7 +114,7 @@ namespace NoThingStore.Data
                     Authorship = "Don Norman",
                     Format = "MOBI",
                     CountOfPages = 368
-                }.GenerateSlug(),
+                },
             });
 
             modelBuilder.Entity<Software>().HasData(new List<Software>
@@ -122,7 +131,7 @@ namespace NoThingStore.Data
                     HowToInstall = "Download the software from the link, run the setup file and follow the instructions.",
                     SystemRequirement = "1GB RAM, 1.5GHz processor, 500MB free disk space",
                     Authorship = "Example Inc."
-                }.GenerateSlug(),
+                },
                 new Software()
                 {
                     Id = 8,
@@ -135,7 +144,7 @@ namespace NoThingStore.Data
                     HowToInstall = "Download the software from the link, run the setup file and follow the instructions.",
                     SystemRequirement = "4GB RAM, 2.5GHz processor, 1GB free disk space",
                     Authorship = "Example Inc."
-                }.GenerateSlug(),
+                },
                 new Software()
                 {
                     Id = 9,
@@ -148,7 +157,7 @@ namespace NoThingStore.Data
                     HowToInstall = "Download the software from the link, run the setup file and follow the instructions.",
                     SystemRequirement = "512MB RAM, 1GHz processor, 100MB free disk space",
                     Authorship = "Example Inc."
-                }.GenerateSlug()
+                }
             });
 
             modelBuilder.Entity<VideoCourse>().HasData(new List<VideoCourse>
@@ -165,7 +174,7 @@ namespace NoThingStore.Data
                     Format = "MP4",
                     Duration = 100,
                     Language = "English"
-                }.GenerateSlug(),
+                },
                 new VideoCourse()
                 {
                     Id = 11,
@@ -178,7 +187,7 @@ namespace NoThingStore.Data
                     Format = "MP4",
                     Duration = 90,
                     Language = "English"
-                }.GenerateSlug(),
+                },
                 new VideoCourse()
                 {
                     Id = 12,
@@ -191,7 +200,7 @@ namespace NoThingStore.Data
                     Format = "MP4",
                     Duration = 120,
                     Language = "English"
-                }.GenerateSlug()
+                }
             });
         }
     }

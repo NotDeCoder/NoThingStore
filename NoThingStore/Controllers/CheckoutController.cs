@@ -1,63 +1,80 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using NoThingStore.Models;
 using NoThingStore.Services.Interfaces;
 using System.Security.Claims;
 
-namespace NoThingStore.Controllers
+public class CheckoutController : Controller
 {
-    [Authorize]
-    public class CheckoutController : Controller
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IOrderService _orderService;
+    private readonly ShoppingCart _shoppingCart;
+
+    public CheckoutController(IOrderService orderService, IHttpContextAccessor httpContextAccessor)
     {
-        private readonly IOrderService _orderService;
-        private readonly ShoppingCart _shoppingCart;
+        _orderService = orderService;
+        _httpContextAccessor = httpContextAccessor;
+        _shoppingCart = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<ShoppingCart>("ShoppingCart") ?? new ShoppingCart();
+    }
 
-        public CheckoutController(IOrderService orderService, ShoppingCart shoppingCart)
+    public async Task<IActionResult> Index()
+    {
+        if (_shoppingCart.Items.Count == 0)
         {
-            _orderService = orderService;
-            _shoppingCart = shoppingCart;
+            ModelState.AddModelError("", "Your cart is empty.");
+            return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult Index()
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userEmail = User.FindFirstValue(ClaimTypes.Email);
+
+        var order = CreateOrder(userId, userEmail);
+
+        var productIds = _shoppingCart.Items.Select(i => i.ProductId);
+
+        foreach (var item in _shoppingCart.Items)
         {
-            return View();
+            var product = await _orderService.GetProductByIdAsync(item.ProductId);
+            if (product != null)
+            {
+                OrderItem orderItem = new OrderItem
+                {
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    Price = item.Price,
+                    Product = product,
+                    Order = order
+                };
+                order.OrderItems.Add(orderItem);
+            }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Index(Order order)
+        if (order.OrderItems.Count != productIds.Count())
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
-            if (userId == null || userEmail == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            ModelState.AddModelError("", "Some products from your cart are no longer available.");
+            return RedirectToAction("Index", "Home");
+        }
 
-            if (_shoppingCart.Items.Count == 0)
-            {
-                ModelState.AddModelError("", "Your cart is empty.");
-            }
-
-            if (ModelState.IsValid)
-            {
-                order.UserId = userId;
-                order.Email = userEmail;
-                order.OrderDate = DateTime.Now;
-                order.TotalPrice = _shoppingCart.GetTotalPrice();
-
-                var createdOrder = await _orderService.CreateOrderAsync(userId, userEmail, _shoppingCart);
-                await _orderService.SendOrderConfirmationEmail(createdOrder);
-
-                _shoppingCart.Clear();
-                return RedirectToAction("Completed", "Checkout");
-            }
-
+        if (!ModelState.IsValid)
+        {
             return View(order);
         }
 
-        public IActionResult Completed()
+        await _orderService.CreateOrderAsync(order);
+
+        _shoppingCart.Clear();
+
+        return View("Complete");
+    }
+
+    private Order CreateOrder(string userId, string userEmail)
+    {
+        return new Order
         {
-            return View();
-        }
+            UserId = userId,
+            Email = userEmail,
+            OrderDate = DateTime.Now,
+            Total = _shoppingCart.GetTotalPrice(),
+            OrderItems = new List<OrderItem>()
+        };
     }
 }
