@@ -1,81 +1,149 @@
-﻿@model NoThingStore.Models.EBook
+﻿<link rel="stylesheet" href="~/lib/swiper/swiper-bundle.min.css" />
+<link rel="stylesheet" href="~/lib/glightbox/css/glightbox.min.css" />
+<script src="~/js/front.js"></script>
 
+@model NoThingStore.Models.EBook
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-6">
+                <!-- PRODUCT SLIDER-->
+                <div class="row m-sm-0">
+                    <div class="col-sm-10 order-1 order-sm-1">
+                        <div class="product-slider swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide h-auto"><a class="glightbox product-view" href="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" data-gallery="gallery2" data-glightbox="Product item 1"><img class="img-fluid" src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" alt="..."></a></div>
+                                <div class="swiper-slide h-auto"><a class="glightbox product-view" href="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" data-gallery="gallery2" data-glightbox="Product item 2"><img class="img-fluid" src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" alt="..."></a></div>
+                                <div class="swiper-slide h-auto"><a class="glightbox product-view" href="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" data-gallery="gallery2" data-glightbox="Product item 3"><img class="img-fluid" src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" alt="..."></a></div>
+                                <div class="swiper-slide h-auto"><a class="glightbox product-view" href="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" data-gallery="gallery2" data-glightbox="Product item 4"><img class="img-fluid" src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" alt="..."></a></div>
+                                <div class="swiper-slide h-auto"><a class="glightbox product-view" href="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" data-gallery="gallery2" data-glightbox="Product item 5"><img class="img-fluid" src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" alt="..."></a></div>
+                                <div class="swiper-slide h-auto"><a class="glightbox product-view" href="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" data-gallery="gallery2" data-glightbox="Product item 6"><img class="img-fluid" src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" alt="..."></a></div>
+                                <div class="swiper-slide h-auto"><a class="glightbox product-view" href="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" data-gallery="gallery2" data-glightbox="Product item 7"><img class="img-fluid" src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" alt="..."></a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-10 order-2 order-sm-2" style="margin-top: 1px;">
+                        <div class="product-slider-thumbs swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" alt="..."></div>
+                                <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" alt="..."></div>
+                                <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" alt="..."></div>
+                                <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" alt="..."></div>
+                                <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" alt="..."></div>
+                                <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" alt="..."></div>
+                                <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" alt="..."></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<div>
-    <h4>EBook</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MegabyteSize)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MegabyteSize)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Authorship)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Authorship)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Format)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Format)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CountOfPages)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CountOfPages)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Slug)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Slug)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsAvailable)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsAvailable)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DownloadUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DownloadUrl)
-        </dd>
-    </dl>
-</div>
+            <div class="col-lg-6">
+                <h1>@Html.DisplayFor(model => model.Name)</h1>
+                <p class="text-muted lead">@Html.DisplayFor(model => model.Price) $</p>
+                <p class="text-sm mb-4">@Html.DisplayFor(model => model.Description)</p>
+                @{
+                    if (Model.IsAvailable != true)
+                    {
+                        <p>Out of stock</p>
+                    }
+                    else
+                    {
+                        <p>In stock</p>
+                    }
+                }
+                <div class="row align-items-stretch mb-4">
+                    <partial name="_AddToCartPartial" />
+                </div>
+            </div>
+        </div>
 
-<partial name="_AddToCartPartial" />
+        <!-- DETAILS TABS-->
+        <ul class="nav nav-tabs border-0" id="myTab" role="tablist">
+            <li class="nav-item"><a class="nav-link text-uppercase active" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a></li>
+            <li class="nav-item"><a class="nav-link text-uppercase" id="specification-tab" data-bs-toggle="tab" href="#specification" role="tab" aria-controls="specification" aria-selected="false">Specification</a></li>
+        </ul>
+        <div class="tab-content mb-5" id="myTabContent">
+            <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                <div class="p-4 p-lg-5 bg-white">
+                    <h6 class="text-uppercase">Product description </h6>
+                    <p class="text-muted text-sm mb-0">@Html.DisplayFor(model => model.Description)</p>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="specification" role="tabpanel" aria-labelledby="specification-tab">
+                <div class="p-4 p-lg-5 bg-white">
+                    <h6 class="text-uppercase">Specification </h6>
+                    <dl class="row">
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.MegabyteSize)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.MegabyteSize)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Authorship)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Authorship)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Format)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Format)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.CountOfPages)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.CountOfPages)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Slug)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Slug)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Price)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Price)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.IsAvailable)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.IsAvailable)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.DownloadUrl)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.DownloadUrl)
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<script src="~/lib/swiper/swiper-bundle.min.js"></script>
+<script src="~/lib/glightbox/js/glightbox.min.js"></script>

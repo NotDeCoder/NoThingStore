@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "defaultProvider": "unpkg",
+  "libraries": [
+    {
+      "library": "swiper@9.2.4",
+      "destination": "wwwroot/lib/swiper/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "glightbox@3.2.0",
+      "destination": "wwwroot/lib/glightbox/"
+    }
+  ]
+}
