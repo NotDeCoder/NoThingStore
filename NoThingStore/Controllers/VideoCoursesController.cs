@@ -23,7 +23,7 @@ namespace NoThingStore.Controllers
         }
 
         // GET: VideoCourses/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null || _context.VideoCourses == null)
             {
@@ -83,7 +83,7 @@ namespace NoThingStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CountOfVideos,Format,Duration,Language,Id,Name,Slug,Description,Price,IsAvailable,DownloadUrl")] VideoCourse videoCourse)
+        public async Task<IActionResult> Edit(string id, [Bind("CountOfVideos,Format,Duration,Language,Id,Name,Slug,Description,Price,IsAvailable,DownloadUrl")] VideoCourse videoCourse)
         {
             if (id != videoCourse.Id)
             {
@@ -114,7 +114,7 @@ namespace NoThingStore.Controllers
         }
 
         // GET: VideoCourses/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null || _context.VideoCourses == null)
             {
@@ -134,7 +134,7 @@ namespace NoThingStore.Controllers
         // POST: VideoCourses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.VideoCourses == null)
             {
@@ -150,7 +150,7 @@ namespace NoThingStore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool VideoCourseExists(int id)
+        private bool VideoCourseExists(string id)
         {
             return (_context.VideoCourses?.Any(e => e.Id == id)).GetValueOrDefault();
         }

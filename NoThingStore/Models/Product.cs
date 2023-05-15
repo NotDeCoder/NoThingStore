@@ -1,6 +1,6 @@
 ﻿using Slugify;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.InteropServices;
 
 namespace NoThingStore.Models
 {
@@ -14,8 +14,7 @@ namespace NoThingStore.Models
         }
 
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; } = -1;
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Required(ErrorMessage = "The Name field is required.")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "The Name field must be between 3 and 100 characters.")]
@@ -34,9 +33,13 @@ namespace NoThingStore.Models
         [StringLength(100, MinimumLength = 3, ErrorMessage = "The Slug field must be between 3 and 100 characters.")]
         public string Slug { get; private set; }
 
-        [Required(ErrorMessage = "The Description field is required.")]
-        [StringLength(500, MinimumLength = 10, ErrorMessage = "The Description field must be between 10 and 500 characters.")]
-        public string Description { get; set; }
+        [Required(ErrorMessage = "The Short Description field is required.")]
+        [StringLength(100, MinimumLength = 10, ErrorMessage = "The Short Description field must be between 10 and 100 characters.")]
+        public string ShortDescription { get; set; }
+
+        [Required(ErrorMessage = "The Long Description field is required.")]
+        [StringLength(500, MinimumLength = 10, ErrorMessage = "The Long Description field must be between 10 and 500 characters.")]
+        public string LongDescription { get; set; }
 
         [Required(ErrorMessage = "The Price field is required.")]
         [Range(0.01, 1000000, ErrorMessage = "The Price field must be between 0.01 and 1 000 000.")]

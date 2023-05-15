@@ -18,6 +18,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<ShoppingCart>();
@@ -64,6 +65,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "product_create",
+    pattern: "{controller}/Create",
+    defaults: new { controller = "{controller}", action = "Create" });
+
+app.MapControllerRoute(
     name: "product_details",
     pattern: "{controller}/{slug}",
     defaults: new { controller = "{controller}", action = "Details" });
@@ -71,6 +77,7 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
 app.Run();

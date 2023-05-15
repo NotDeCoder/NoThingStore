@@ -25,19 +25,24 @@ namespace NoThingStore.Data
 
             // Use TPC inheritance strategy
 
-            modelBuilder.Entity<Product>().ToTable("Products");
-            modelBuilder.Entity<ActivationKey>().ToTable("ActivationKeys");
-            modelBuilder.Entity<EBook>().ToTable("EBooks");
-            modelBuilder.Entity<Software>().ToTable("Softwares");
-            modelBuilder.Entity<VideoCourse>().ToTable("VideoCourses");
+            modelBuilder.Entity<Product>().UseTptMappingStrategy()
+                .ToTable("Products");
+            modelBuilder.Entity<ActivationKey>()
+                .ToTable("ActivationKeys");
+            modelBuilder.Entity<EBook>()
+                .ToTable("EBooks");
+            modelBuilder.Entity<Software>()
+                .ToTable("Softwares");
+            modelBuilder.Entity<VideoCourse>()
+                .ToTable("VideoCourses");
 
             modelBuilder.Entity<ActivationKey>().HasData(new List<ActivationKey>
             {
                 new ActivationKey()
                 {
-                    Id = 1,
                     Name = "Microsoft Office Professional Plus 2019",
-                    Description = "The latest version of Microsoft Office for professionals",
+                    ShortDescription = "The latest version of Microsoft Office for professionals",
+                    LongDescription = "Microsoft Office Professional Plus 2019 is the latest version of Microsoft Office for professionals. It includes Word, Excel, PowerPoint, Outlook, OneNote, Publisher, Access, Skype for Business, and OneDrive for Business. It is a one-time purchase that does not receive feature updates.",
                     Price = 399.99m,
                     IsAvailable = true,
                     Key = "ABCD-1234-EFGH-5678",
@@ -48,9 +53,9 @@ namespace NoThingStore.Data
                 },
                 new ActivationKey()
                 {
-                    Id = 2,
                     Name = "Adobe Creative Cloud All Apps",
-                    Description = "Access to all Adobe Creative Cloud apps",
+                    ShortDescription = "Access to all Adobe Creative Cloud apps",
+                    LongDescription = "Adobe Creative Cloud All Apps is a subscription plan that gives you access to all Adobe Creative Cloud apps, including Photoshop, Illustrator, InDesign, Premiere Pro, Acrobat Pro DC, and more. It is a one-year subscription that does not receive feature updates.",
                     Price = 599.99m,
                     IsAvailable = true,
                     Key = "WXYZ-5678-IJKL-9012",
@@ -61,9 +66,9 @@ namespace NoThingStore.Data
                 },
                 new ActivationKey()
                 {
-                    Id = 3,
                     Name = "Windows 10 Pro",
-                    Description = "The latest version of Windows for professionals",
+                    ShortDescription = "The latest version of Windows for professionals",
+                    LongDescription = "Windows 10 Pro is the latest version of Windows for professionals. It includes all the features of Windows 10 Home, plus important business functionality for encryption, remote log-in, creating virtual machines, and more.",
                     Price = 199.99m,
                     IsAvailable = true,
                     Key = "MNOP-3456-QRST-7890",
@@ -78,9 +83,9 @@ namespace NoThingStore.Data
             {
                 new EBook()
                 {
-                    Id = 4,
                     Name = "The Lean Startup",
-                    Description = "A guide to building a successful startup",
+                    ShortDescription = "A guide to building a successful startup",
+                    LongDescription = "The Lean Startup is a book by Eric Ries describing the lean startup approach, which aims to shorten product development cycles and rapidly discover if a proposed business model is viable.",
                     Price = 9.99m,
                     IsAvailable = true,
                     DownloadUrl = "https://example.com/the-lean-startup.pdf",
@@ -91,9 +96,9 @@ namespace NoThingStore.Data
                 },
                 new EBook()
                 {
-                    Id = 5,
                     Name = "The Da Vinci Code",
-                    Description = "A thriller novel by Dan Brown",
+                    ShortDescription = "A thriller novel by Dan Brown",
+                    LongDescription = "The Da Vinci Code is a 2003 mystery thriller novel by Dan Brown. It is Brown's second novel to include the character Robert Langdon: the first was his 2000 novel Angels & Demons.",
                     Price = 7.99m,
                     IsAvailable = true,
                     DownloadUrl = "https://example.com/the-da-vinci-code.epub",
@@ -104,9 +109,9 @@ namespace NoThingStore.Data
                 },
                 new EBook()
                 {
-                    Id = 6,
                     Name = "The Design of Everyday Things",
-                    Description = "A guide to design principles",
+                    ShortDescription = "A guide to design principles",
+                    LongDescription = "The Design of Everyday Things is a best-selling book by cognitive scientist and usability engineer Donald Norman about how design serves as the communication between object and user, and how to optimize that conduit of communication in order to make the experience of using the object pleasurable.",
                     Price = 12.99m,
                     IsAvailable = true,
                     DownloadUrl = "https://example.com/the-design-of-everyday-things.mobi",
@@ -121,9 +126,9 @@ namespace NoThingStore.Data
             {
                 new Software()
                 {
-                    Id = 7,
                     Name = "Antivirus PRO",
-                    Description = "The ultimate antivirus software for your computer.",
+                    ShortDescription = "The ultimate antivirus software for your computer.",
+                    LongDescription = "Antivirus PRO is the ultimate antivirus software for your computer. It protects you from all types of malware and viruses.",
                     Price = 19.99m,
                     IsAvailable = true,
                     DownloadUrl = "https://example.com/antivirus-pro-download",
@@ -134,9 +139,9 @@ namespace NoThingStore.Data
                 },
                 new Software()
                 {
-                    Id = 8,
                     Name = "Video Editing Software PRO",
-                    Description = "Professional video editing software with advanced features.",
+                    ShortDescription = "Professional video editing software with advanced features.",
+                    LongDescription = "Video Editing Software PRO is a professional video editing software with advanced features. It allows you to edit videos in 4K resolution and export them to any format.",
                     Price = 49.99m,
                     IsAvailable = true,
                     DownloadUrl = "https://example.com/video-editing-software-pro-download",
@@ -147,9 +152,9 @@ namespace NoThingStore.Data
                 },
                 new Software()
                 {
-                    Id = 9,
                     Name = "Backup Software PRO",
-                    Description = "The best backup software for your computer.",
+                    ShortDescription = "The best backup software for your computer.",
+                    LongDescription = "Backup Software PRO is the best backup software for your computer. It allows you to backup all your files and folders automatically.",
                     Price = 9.99m,
                     IsAvailable = true,
                     DownloadUrl = "https://example.com/backup-software-pro-download",
@@ -164,9 +169,9 @@ namespace NoThingStore.Data
             {
                 new VideoCourse()
                 {
-                    Id = 10,
                     Name = "Learn C#",
-                    Description = "Learn C# from scratch",
+                    ShortDescription = "Learn C# from scratch",
+                    LongDescription = "Learn C# from scratch. This course will teach you the basics of C# programming language.",
                     Price = 49.99m,
                     IsAvailable = true,
                     DownloadUrl = "https://example.com/learn-csharp",
@@ -177,9 +182,9 @@ namespace NoThingStore.Data
                 },
                 new VideoCourse()
                 {
-                    Id = 11,
                     Name = "Learn JavaScript",
-                    Description = "Learn JavaScript from scratch",
+                    ShortDescription = "Learn JavaScript from scratch",
+                    LongDescription = "Learn JavaScript from scratch. This course will teach you the basics of JavaScript programming language.",
                     Price = 49.99m,
                     IsAvailable = true,
                     DownloadUrl = "https://example.com/learn-javascript",
@@ -190,9 +195,9 @@ namespace NoThingStore.Data
                 },
                 new VideoCourse()
                 {
-                    Id = 12,
                     Name = "Learn Python",
-                    Description = "Learn Python from scratch",
+                    ShortDescription = "Learn Python from scratch",
+                    LongDescription = "Learn Python from scratch. This course will teach you the basics of Python programming language.",
                     Price = 49.99m,
                     IsAvailable = true,
                     DownloadUrl = "https://example.com/learn-python",

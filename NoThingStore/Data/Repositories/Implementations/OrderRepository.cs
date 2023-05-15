@@ -47,7 +47,7 @@ namespace NoThingStore.Data.Repositories.Implementations
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Product> GetProductByIdAsync(int id)
+        public async Task<Product> GetProductByIdAsync(string id)
         {
             return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
         }

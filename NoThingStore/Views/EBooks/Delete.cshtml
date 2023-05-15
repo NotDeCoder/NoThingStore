@@ -48,10 +48,16 @@
             @Html.DisplayFor(model => model.Slug)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.ShortDescription)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.ShortDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LongDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LongDescription)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Price)

@@ -10,6 +10,6 @@ namespace NoThingStore.Services.Interfaces
         Task CreateOrderAsync(Order order);
         Task UpdateOrderAsync(Order order);
         Task DeleteOrderAsync(Order order);
-        Task<Product> GetProductByIdAsync(int productId);
+        Task<Product> GetProductByIdAsync(string productId);
     }
 }

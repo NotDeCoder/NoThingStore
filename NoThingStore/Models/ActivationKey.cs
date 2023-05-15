@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NoThingStore.Models
 {
     public class ActivationKey : Product
     {
-
         [Required(ErrorMessage = "The Key field is required.")]
         [StringLength(100, MinimumLength = 4, ErrorMessage = "The Key field must be between 4 and 100 characters.")]
         public string Key { get; set; }

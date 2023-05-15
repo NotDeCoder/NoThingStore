@@ -34,7 +34,10 @@
                 @Html.DisplayNameFor(model => model.Slug)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.ShortDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LongDescription)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
@@ -69,7 +72,10 @@
                 @Html.DisplayFor(modelItem => item.Slug)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @Html.DisplayFor(modelItem => item.ShortDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LongDescription)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)

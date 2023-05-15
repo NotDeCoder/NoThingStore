@@ -19,7 +19,7 @@ namespace NoThingStore.Controllers
             return View(_shoppingCart);
         }
 
-        public IActionResult AddToCart(int productId, string name, decimal price, int quantity = 1)
+        public IActionResult AddToCart(string productId, string name, decimal price, int quantity = 1)
         {
             var cartItem = new CartItem { ProductId = productId, Name = name, Price = price, Quantity = quantity };
             _shoppingCart.AddItem(cartItem);
@@ -27,7 +27,7 @@ namespace NoThingStore.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult RemoveFromCart(int productId)
+        public IActionResult RemoveFromCart(string productId)
         {
             _shoppingCart.RemoveItem(productId);
             _httpContextAccessor.HttpContext.Session.SetObjectAsJson("ShoppingCart", _shoppingCart);

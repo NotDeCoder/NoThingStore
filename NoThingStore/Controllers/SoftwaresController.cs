@@ -23,7 +23,7 @@ namespace NoThingStore.Controllers
         }
 
         // GET: Softwares/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null || _context.Softwares == null)
             {
@@ -83,7 +83,7 @@ namespace NoThingStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MegabyteSize,HowToInstall,SystemRequirement,Authorship,Id,Name,Slug,Description,Price,IsAvailable,DownloadUrl")] Software software)
+        public async Task<IActionResult> Edit(string id, [Bind("MegabyteSize,HowToInstall,SystemRequirement,Authorship,Id,Name,Slug,Description,Price,IsAvailable,DownloadUrl")] Software software)
         {
             if (id != software.Id)
             {
@@ -114,7 +114,7 @@ namespace NoThingStore.Controllers
         }
 
         // GET: Softwares/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null || _context.Softwares == null)
             {
@@ -150,7 +150,7 @@ namespace NoThingStore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SoftwareExists(int id)
+        private bool SoftwareExists(string id)
         {
             return (_context.Softwares?.Any(e => e.Id == id)).GetValueOrDefault();
         }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NoThingStore.Models;
 using NoThingStore.Data;
+using NoThingStore.Models;
 
 namespace NoThingStore.Controllers
 {
@@ -23,7 +23,7 @@ namespace NoThingStore.Controllers
         }
 
         // GET: ActivationKeys/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null || _context.ActivationKeys == null)
             {
@@ -46,16 +46,17 @@ namespace NoThingStore.Controllers
             return View();
         }
 
+
         // POST: ActivationKeys/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Key,TargetProgramName,ProgramVersion,ExpirationDate,HowToActivate,Id,Name,Slug,Description,Price,IsAvailable,DownloadUrl")] ActivationKey activationKey)
+        public async Task<IActionResult> Create([Bind("Key,TargetProgramName,ProgramVersion,ExpirationDate,HowToActivate,Id,Name,Slug,ShortDescription,LongDescription,Price,IsAvailable")] ActivationKey activationKey)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(activationKey);
+                _context.ActivationKeys.Add(activationKey);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -83,7 +84,7 @@ namespace NoThingStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Key,TargetProgramName,ProgramVersion,ExpirationDate,HowToActivate,Id,Name,Slug,Description,Price,IsAvailable,DownloadUrl")] ActivationKey activationKey)
+        public async Task<IActionResult> Edit(string id, [Bind("Key,TargetProgramName,ProgramVersion,ExpirationDate,HowToActivate,Id,Name,Slug,ShortDescription,LongDescription,Price,IsAvailable")] ActivationKey activationKey)
         {
             if (id != activationKey.Id)
             {
@@ -114,7 +115,7 @@ namespace NoThingStore.Controllers
         }
 
         // GET: ActivationKeys/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null || _context.ActivationKeys == null)
             {
@@ -150,7 +151,7 @@ namespace NoThingStore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ActivationKeyExists(int id)
+        private bool ActivationKeyExists(string id)
         {
             return (_context.ActivationKeys?.Any(e => e.Id == id)).GetValueOrDefault();
         }

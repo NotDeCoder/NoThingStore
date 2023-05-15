@@ -5,7 +5,7 @@ namespace NoThingStore.Models
     public class CartItem
     {
         [Required]
-        public int ProductId { get; set; }
+        public string ProductId { get; set; }
 
         [Required]
         public string Name { get; set; }

@@ -45,7 +45,7 @@ namespace NoThingStore.Services.Implementations
             await _orderRepository.DeleteOrderAsync(order);
         }
 
-        public async Task<Product> GetProductByIdAsync(int id)
+        public async Task<Product> GetProductByIdAsync(string id)
         {
             return await _orderRepository.GetProductByIdAsync(id);
         }

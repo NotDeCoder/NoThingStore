@@ -63,7 +63,7 @@ public class CheckoutController : Controller
 
         _shoppingCart.Clear();
 
-        return View("Complete");
+        return View("Index");
     }
 
     private Order CreateOrder(string userId, string userEmail)

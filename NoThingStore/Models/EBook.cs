@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NoThingStore.Models
 {
     public class EBook : Product
     {
-
         [Required(ErrorMessage = "The MegabyteSize field is required.")]
         [Range(1, uint.MaxValue, ErrorMessage = "The MegabyteSize field must be a positive integer.")]
         public uint MegabyteSize { get; set; }

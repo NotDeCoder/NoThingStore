@@ -45,7 +45,7 @@
             <div class="col-lg-6">
                 <h1>@Html.DisplayFor(model => model.Name)</h1>
                 <p class="text-muted lead">@Html.DisplayFor(model => model.Price) $</p>
-                <p class="text-sm mb-4">@Html.DisplayFor(model => model.Description)</p>
+                <p class="text-sm mb-4">@Html.DisplayFor(model => model.ShortDescription)</p>
                 @{
                     if (Model.IsAvailable != true)
                     {
@@ -71,7 +71,7 @@
             <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
                 <div class="p-4 p-lg-5 bg-white">
                     <h6 class="text-uppercase">Product description </h6>
-                    <p class="text-muted text-sm mb-0">@Html.DisplayFor(model => model.Description)</p>
+                    <p class="text-muted text-sm mb-0">@Html.DisplayFor(model => model.LongDescription)</p>
                 </div>
             </div>
             <div class="tab-pane fade" id="specification" role="tabpanel" aria-labelledby="specification-tab">
@@ -115,10 +115,16 @@
                             @Html.DisplayFor(model => model.Slug)
                         </dd>
                         <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.Description)
+                            @Html.DisplayNameFor(model => model.ShortDescription)
                         </dt>
                         <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.Description)
+                            @Html.DisplayFor(model => model.ShortDescription)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.LongDescription)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.LongDescription)
                         </dd>
                         <dt class="col-sm-2">
                             @Html.DisplayNameFor(model => model.Price)
