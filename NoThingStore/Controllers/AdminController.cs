@@ -52,6 +52,33 @@ namespace NoThingStore.Controllers
             return RedirectToAction(nameof(Users));
         }
 
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string id, IdentityUser user)
+        {
+            if (id != user.Id)
+            {
+                return BadRequest();
+            }
+            var result = await _userService.DeleteUserAsync(user);
+            if (!result.Succeeded)
+            {
+                return View(user);
+            }
+            return RedirectToAction(nameof(Users));
+        }
+
+
+
         public async Task<IActionResult> Orders()
         {
             var orders = await _orderService.GetAllOrdersAsync();
@@ -83,6 +110,31 @@ namespace NoThingStore.Controllers
                 return View(editedOrder);
             }
 
+            return RedirectToAction("Orders");
+        }
+
+        public async Task<IActionResult> DeleteOrder(int id)
+        {
+            var order = await _orderService.GetOrderByIdAsync(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return View(order);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteOrder(int id, Order order)
+        {
+            if (id != order.Id)
+            {
+                return BadRequest();
+            }
+            var result = _orderService.DeleteOrderAsync(order);
+            if (!result.IsCompletedSuccessfully)
+            {
+                return View(order);
+            }
             return RedirectToAction(nameof(Orders));
         }
     }

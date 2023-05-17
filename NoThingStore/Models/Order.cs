@@ -18,10 +18,9 @@ namespace NoThingStore.Models
 
         [Required(ErrorMessage = "Total is required.")]
         [Range(0.01, double.MaxValue, ErrorMessage = "Total must be greater than 0.")]
-        public decimal Total { get; set; }
+        public decimal Total => OrderItems.Sum(oi => oi.Price * oi.Quantity);
 
         [Required(ErrorMessage = "Order items are required.")]
         public List<OrderItem> OrderItems { get; set; }
     }
-
 }

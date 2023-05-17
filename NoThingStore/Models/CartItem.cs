@@ -5,7 +5,7 @@ namespace NoThingStore.Models
     public class CartItem
     {
         [Required]
-        public string ProductId { get; set; }
+        public int ProductId { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -20,9 +20,6 @@ namespace NoThingStore.Models
         [Required]
         public int Quantity { get; set; }
 
-        public decimal TotalPrice
-        {
-            get { return Price * Quantity; }
-        }
+        public decimal Total => Price * Quantity;
     }
 }

@@ -1,0 +1,19 @@
+﻿<div class="col-lg-4 col-md-6 mb-4">
+    <div class="card @(!Model.IsAvailable ? "disabled-card" : "")">
+        <a asp-action="Details" asp-route-slug="@Model.Slug" style="text-decoration: none;">
+            <img src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" class="card-img-top" alt="Product Photo">
+        </a>
+
+        <div class="card-body">
+            <a asp-action="Details" asp-route-slug="@Model.Slug" style="text-decoration: none;">
+                <h5 class="card-title">@Model.Name</h5>
+            </a>
+            <p class="card-text">@Model.ShortDescription</p>
+            <h6 class="card-price">Price: $@Model.Price</h6>
+            <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                <input type="hidden" name="productId" value="@Model.Id" />
+                <button type="submit" class="btn btn-primary" @(!Model.IsAvailable ? "disabled" : "")>Buy Now</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NoThingStore.Models;
 using NoThingStore.Data;
+using NoThingStore.Models;
 
 namespace NoThingStore.Controllers
 {
@@ -17,13 +22,14 @@ namespace NoThingStore.Controllers
         // GET: Softwares
         public async Task<IActionResult> Index()
         {
-            return _context.Softwares != null ?
-                        View(await _context.Softwares.ToListAsync()) :
-                        Problem("Entity set 'ApplicationDbContext.Softwares'  is null.");
+              return _context.Softwares != null ? 
+                          View(await _context.Softwares.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Softwares'  is null.");
         }
 
         // GET: Softwares/Details/5
-        public async Task<IActionResult> Details(string? id)
+        [Route("{controller}/Details/{id:int}")]
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Softwares == null)
             {
@@ -40,6 +46,23 @@ namespace NoThingStore.Controllers
             return View(software);
         }
 
+        // GET: Softwares/slug
+        [Route("{controller}/{slug}")]
+        public async Task<IActionResult> Details(string slug)
+        {
+            if (slug == null || _context.Softwares == null)
+            {
+                return NotFound();
+            }
+            var software = await _context.Softwares
+                .FirstOrDefaultAsync(m => m.Slug == slug);
+            if (software == null)
+            {
+                return NotFound();
+            }
+            return View(software);
+        }
+
         // GET: Softwares/Create
         public IActionResult Create()
         {
@@ -51,7 +74,7 @@ namespace NoThingStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MegabyteSize,HowToInstall,SystemRequirement,Authorship,Id,Name,Slug,Description,Price,IsAvailable,DownloadUrl")] Software software)
+        public async Task<IActionResult> Create([Bind("MegabyteSize,HowToInstall,SystemRequirement,Authorship,DownloadUrl,Id,Name,Slug,ShortDescription,LongDescription,Price,IsAvailable")] Software software)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +106,7 @@ namespace NoThingStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("MegabyteSize,HowToInstall,SystemRequirement,Authorship,Id,Name,Slug,Description,Price,IsAvailable,DownloadUrl")] Software software)
+        public async Task<IActionResult> Edit(int id, [Bind("MegabyteSize,HowToInstall,SystemRequirement,Authorship,DownloadUrl,Id,Name,Slug,ShortDescription,LongDescription,Price,IsAvailable")] Software software)
         {
             if (id != software.Id)
             {
@@ -114,7 +137,7 @@ namespace NoThingStore.Controllers
         }
 
         // GET: Softwares/Delete/5
-        public async Task<IActionResult> Delete(string? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Softwares == null)
             {
@@ -145,12 +168,12 @@ namespace NoThingStore.Controllers
             {
                 _context.Softwares.Remove(software);
             }
-
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SoftwareExists(string id)
+        private bool SoftwareExists(int id)
         {
             return (_context.Softwares?.Any(e => e.Id == id)).GetValueOrDefault();
         }

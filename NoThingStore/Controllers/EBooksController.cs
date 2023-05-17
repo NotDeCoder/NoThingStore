@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NoThingStore.Data;
 using NoThingStore.Models;
@@ -17,13 +22,14 @@ namespace NoThingStore.Controllers
         // GET: EBooks
         public async Task<IActionResult> Index()
         {
-            return _context.EBooks != null ?
-                        View(await _context.EBooks.ToListAsync()) :
-                        Problem("Entity set 'ApplicationDbContext.EBooks' is null.");
+              return _context.EBooks != null ? 
+                          View(await _context.EBooks.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.EBooks'  is null.");
         }
 
         // GET: EBooks/Details/5
-        public async Task<IActionResult> Details(string? id)
+        [Route("{controller}/Details/{id:int}")]
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.EBooks == null)
             {
@@ -40,6 +46,23 @@ namespace NoThingStore.Controllers
             return View(eBook);
         }
 
+        // GET: EBooks/slug
+        [Route("{controller}/{slug}")]
+        public async Task<IActionResult> Details(string slug)
+        {
+            if (slug == null || _context.EBooks == null)
+            {
+                return NotFound();
+            }
+            var eBook = await _context.EBooks
+                .FirstOrDefaultAsync(m => m.Slug == slug);
+            if (eBook == null)
+            {
+                return NotFound();
+            }
+            return View("Details", eBook);
+        }
+
         // GET: EBooks/Create
         public IActionResult Create()
         {
@@ -51,7 +74,7 @@ namespace NoThingStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MegabyteSize,Authorship,Format,CountOfPages,Id,Name,Slug,Description,Price,IsAvailable,DownloadUrl")] EBook eBook)
+        public async Task<IActionResult> Create([Bind("MegabyteSize,Authorship,Format,CountOfPages,DownloadUrl,Id,Name,Slug,ShortDescription,LongDescription,Price,IsAvailable")] EBook eBook)
         {
             if (ModelState.IsValid)
             {
@@ -63,7 +86,7 @@ namespace NoThingStore.Controllers
         }
 
         // GET: EBooks/Edit/5
-        public async Task<IActionResult> Edit(string? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.EBooks == null)
             {
@@ -83,7 +106,7 @@ namespace NoThingStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("MegabyteSize,Authorship,Format,CountOfPages,Id,Name,Slug,Description,Price,IsAvailable,DownloadUrl")] EBook eBook)
+        public async Task<IActionResult> Edit(int id, [Bind("MegabyteSize,Authorship,Format,CountOfPages,DownloadUrl,Id,Name,Slug,ShortDescription,LongDescription,Price,IsAvailable")] EBook eBook)
         {
             if (id != eBook.Id)
             {
@@ -114,7 +137,7 @@ namespace NoThingStore.Controllers
         }
 
         // GET: EBooks/Delete/5
-        public async Task<IActionResult> Delete(string? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.EBooks == null)
             {
@@ -145,12 +168,12 @@ namespace NoThingStore.Controllers
             {
                 _context.EBooks.Remove(eBook);
             }
-
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EBookExists(string id)
+        private bool EBookExists(int id)
         {
             return (_context.EBooks?.Any(e => e.Id == id)).GetValueOrDefault();
         }

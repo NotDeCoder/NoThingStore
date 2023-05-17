@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NoThingStore.Models;
 using NoThingStore.Services.Interfaces;
 using System.Security.Claims;
 
+[Authorize]
 public class CheckoutController : Controller
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -33,19 +35,15 @@ public class CheckoutController : Controller
 
         foreach (var item in _shoppingCart.Items)
         {
-            var product = await _orderService.GetProductByIdAsync(item.ProductId);
-            if (product != null)
+            OrderItem orderItem = new OrderItem
             {
-                OrderItem orderItem = new OrderItem
-                {
-                    ProductId = item.ProductId,
-                    Quantity = item.Quantity,
-                    Price = item.Price,
-                    Product = product,
-                    Order = order
-                };
-                order.OrderItems.Add(orderItem);
-            }
+                ProductId = item.ProductId,
+                Quantity = item.Quantity,
+                Name = item.Name,
+                Price = item.Price,
+                Order = order
+            };
+            order.OrderItems.Add(orderItem);
         }
 
         if (order.OrderItems.Count != productIds.Count())
@@ -73,7 +71,6 @@ public class CheckoutController : Controller
             UserId = userId,
             Email = userEmail,
             OrderDate = DateTime.Now,
-            Total = _shoppingCart.GetTotalPrice(),
             OrderItems = new List<OrderItem>()
         };
     }

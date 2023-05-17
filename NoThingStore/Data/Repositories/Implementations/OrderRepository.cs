@@ -37,7 +37,7 @@ namespace NoThingStore.Data.Repositories.Implementations
 
         public async Task UpdateOrderAsync(Order order)
         {
-            _context.Entry(order).State = EntityState.Modified;
+            _context.Orders.Update(order);
             await _context.SaveChangesAsync();
         }
 
@@ -45,11 +45,6 @@ namespace NoThingStore.Data.Repositories.Implementations
         {
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task<Product> GetProductByIdAsync(string id)
-        {
-            return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

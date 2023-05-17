@@ -4,6 +4,8 @@
     {
         public List<CartItem> Items { get; set; }
 
+        public decimal Total => Items.Sum(i => i.Price * i.Quantity);
+
         public ShoppingCart()
         {
             Items = new List<CartItem>();
@@ -22,14 +24,29 @@
             }
         }
 
-        public void RemoveItem(string productId)
+        public void AddItem(Product product, int quantity)
         {
-            Items.RemoveAll(i => i.ProductId == productId);
+            var existingItem = Items.Find(i => i.ProductId == product.Id);
+            if (existingItem != null)
+            {
+                existingItem.Quantity += quantity;
+            }
+            else
+            {
+                Items.Add(new CartItem
+                {
+                    ProductId = product.Id,
+                    Name = product.Name,
+                    Price = product.Price,
+                    Quantity = quantity,
+                });
+            }
         }
 
-        public decimal GetTotalPrice()
+
+        public void RemoveItem(int productId)
         {
-            return Items.Sum(i => i.Price * i.Quantity);
+            Items.RemoveAll(i => i.ProductId == productId);
         }
 
         public void Clear()

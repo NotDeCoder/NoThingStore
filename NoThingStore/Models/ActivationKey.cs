@@ -14,7 +14,7 @@ namespace NoThingStore.Models
         public string TargetProgramName { get; set; }
 
         [Required(ErrorMessage = "The ProgramVersion field is required.")]
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "The ProgramVersion field must be between 3 and 20 characters.")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "The ProgramVersion field must be between 3 and 20 characters.")]
         public string ProgramVersion { get; set; }
 
         [Required(ErrorMessage = "The ExpirationDate field is required.")]

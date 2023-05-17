@@ -37,6 +37,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
 builder.Services.AddScoped<ShoppingCart>();
 
 
@@ -68,11 +71,6 @@ app.MapControllerRoute(
     name: "product_create",
     pattern: "{controller}/Create",
     defaults: new { controller = "{controller}", action = "Create" });
-
-app.MapControllerRoute(
-    name: "product_details",
-    pattern: "{controller}/{slug}",
-    defaults: new { controller = "{controller}", action = "Details" });
 
 app.MapControllerRoute(
     name: "default",

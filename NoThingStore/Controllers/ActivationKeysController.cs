@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NoThingStore.Data;
 using NoThingStore.Models;
@@ -17,13 +22,14 @@ namespace NoThingStore.Controllers
         // GET: ActivationKeys
         public async Task<IActionResult> Index()
         {
-            return _context.ActivationKeys != null ?
-                        View(await _context.ActivationKeys.ToListAsync()) :
-                        Problem("Entity set 'ApplicationDbContext.ActivationKeys'  is null.");
+              return _context.ActivationKeys != null ? 
+                          View(await _context.ActivationKeys.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.ActivationKeys'  is null.");
         }
 
         // GET: ActivationKeys/Details/5
-        public async Task<IActionResult> Details(string? id)
+        [Route("{controller}/Details/{id:int}")]
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.ActivationKeys == null)
             {
@@ -40,12 +46,28 @@ namespace NoThingStore.Controllers
             return View(activationKey);
         }
 
+        // GET: ActivationKeys/slug
+        [Route("{controller}/{slug}")]
+        public async Task<IActionResult> Details(string slug)
+        {
+            if (slug == null || _context.ActivationKeys == null)
+            {
+                return NotFound();
+            }
+            var activationKey = await _context.ActivationKeys
+                .FirstOrDefaultAsync(m => m.Slug == slug);
+            if (activationKey == null)
+            {
+                return NotFound();
+            }
+            return View("Details", activationKey);
+        }
+
         // GET: ActivationKeys/Create
         public IActionResult Create()
         {
             return View();
         }
-
 
         // POST: ActivationKeys/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -56,7 +78,7 @@ namespace NoThingStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.ActivationKeys.Add(activationKey);
+                _context.Add(activationKey);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -84,7 +106,7 @@ namespace NoThingStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Key,TargetProgramName,ProgramVersion,ExpirationDate,HowToActivate,Id,Name,Slug,ShortDescription,LongDescription,Price,IsAvailable")] ActivationKey activationKey)
+        public async Task<IActionResult> Edit(int id, [Bind("Key,TargetProgramName,ProgramVersion,ExpirationDate,HowToActivate,Id,Name,Slug,ShortDescription,LongDescription,Price,IsAvailable")] ActivationKey activationKey)
         {
             if (id != activationKey.Id)
             {
@@ -115,7 +137,7 @@ namespace NoThingStore.Controllers
         }
 
         // GET: ActivationKeys/Delete/5
-        public async Task<IActionResult> Delete(string? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.ActivationKeys == null)
             {
@@ -133,7 +155,6 @@ namespace NoThingStore.Controllers
         }
 
         // POST: ActivationKeys/Delete/5
-        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -146,12 +167,12 @@ namespace NoThingStore.Controllers
             {
                 _context.ActivationKeys.Remove(activationKey);
             }
-
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ActivationKeyExists(string id)
+        private bool ActivationKeyExists(int id)
         {
             return (_context.ActivationKeys?.Any(e => e.Id == id)).GetValueOrDefault();
         }
