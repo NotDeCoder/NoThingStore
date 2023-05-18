@@ -48,5 +48,7 @@ namespace NoThingStore.Models
 
         [Display(Name = "Is Available")]
         public bool IsAvailable { get; set; }
+
+        public List<ProductImage>? ProductImages { get; set; }
     }
 }

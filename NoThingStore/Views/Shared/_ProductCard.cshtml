@@ -1,7 +1,8 @@
-﻿<div class="col-lg-4 col-md-6 mb-4">
+﻿@model Product
+<div class="col-lg-4 col-md-6 mb-4">
     <div class="card @(!Model.IsAvailable ? "disabled-card" : "")">
         <a asp-action="Details" asp-route-slug="@Model.Slug" style="text-decoration: none;">
-            <img src="https://dummyimage.com/1920x1080/dee2e6/6c757d.jpg" class="card-img-top" alt="Product Photo">
+            <img src="@Model.ProductImages.FirstOrDefault().ImageUrl" class="card-img-top" alt="Product Photo">
         </a>
 
         <div class="card-body">

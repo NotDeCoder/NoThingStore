@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NoThingStore.Data;
 using NoThingStore.Models;
 using System.Diagnostics;

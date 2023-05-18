@@ -17,24 +17,54 @@ namespace NoThingStore.Data
         public DbSet<Software> Softwares { get; set; }
         public DbSet<VideoCourse> VideoCourses { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
 
+        int _imageCounter = 0;
+        readonly Random _random = new();
+
+        private ProductImage GenerateRandomImage(Random random, int productId)
+        {
+            int width = random.Next(800, 1920);
+            int height = random.Next(600, 1080);
+            string backgroundColor = string.Format("{0:X6}", random.Next(0x1000000));
+            string textColor = string.Format("{0:X6}", random.Next(0x1000000));
+
+            ProductImage productImage = new()
+            {
+                Id = ++_imageCounter,
+                ProductId = productId,
+                ImageUrl = $"https://dummyimage.com/{width}x{height}/{backgroundColor}/{textColor}.jpg"
+            };
+            return productImage;
+        }
+
+        private List<ProductImage> GenerateRandomListOfImages(Random random, int productId)
+        {
+            List<ProductImage> productImages = new();
+            int numberOfImages = random.Next(3, 10);
+            for (int i = 0; i < numberOfImages; i++)
+            {
+                productImages.Add(GenerateRandomImage(random, productId));
+            }
+            return productImages;
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            // connect images to products
+
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.ProductImages)
+                .WithOne(pi => pi.Product)
+                .HasForeignKey(pi => pi.ProductId);
+
+
+
             // Use TPC inheritance strategy
 
-            modelBuilder.Entity<Product>().UseTptMappingStrategy()
-                .ToTable("Products");
-            modelBuilder.Entity<ActivationKey>()
-                .ToTable("ActivationKeys");
-            modelBuilder.Entity<EBook>()
-                .ToTable("EBooks");
-            modelBuilder.Entity<Software>()
-                .ToTable("Softwares");
-            modelBuilder.Entity<VideoCourse>()
-                .ToTable("VideoCourses");
+            modelBuilder.Entity<Product>().UseTptMappingStrategy();
 
             modelBuilder.Entity<ActivationKey>().HasData(new List<ActivationKey>
             {
@@ -289,6 +319,16 @@ namespace NoThingStore.Data
                     Language = "English"
                 }
             });
+
+            List<ProductImage> productImages = new();
+
+            for (int i = 1; i <= 17; i++)
+            {
+                productImages.AddRange(GenerateRandomListOfImages(_random, i));
+            }
+
+            modelBuilder.Entity<ProductImage>().HasData(productImages);
+
         }
     }
 }

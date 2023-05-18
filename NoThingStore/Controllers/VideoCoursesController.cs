@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NoThingStore.Data;
 using NoThingStore.Models;
@@ -22,9 +17,9 @@ namespace NoThingStore.Controllers
         // GET: VideoCourses
         public async Task<IActionResult> Index()
         {
-              return _context.VideoCourses != null ? 
-                          View(await _context.VideoCourses.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.VideoCourses'  is null.");
+            return _context.VideoCourses != null ?
+                        View(await _context.VideoCourses.Include(vc => vc.ProductImages).ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.VideoCourses'  is null.");
         }
 
         // GET: VideoCourses/Details/5
@@ -37,6 +32,7 @@ namespace NoThingStore.Controllers
             }
 
             var videoCourse = await _context.VideoCourses
+                .Include(vc => vc.ProductImages)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (videoCourse == null)
             {
@@ -55,6 +51,7 @@ namespace NoThingStore.Controllers
                 return NotFound();
             }
             var videoCourse = await _context.VideoCourses
+                .Include(vc => vc.ProductImages)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
             if (videoCourse == null)
             {
@@ -168,7 +165,7 @@ namespace NoThingStore.Controllers
             {
                 _context.VideoCourses.Remove(videoCourse);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

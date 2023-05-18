@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NoThingStore.Data;
 using NoThingStore.Models;
@@ -22,9 +17,9 @@ namespace NoThingStore.Controllers
         // GET: Softwares
         public async Task<IActionResult> Index()
         {
-              return _context.Softwares != null ? 
-                          View(await _context.Softwares.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Softwares'  is null.");
+            return _context.Softwares != null ?
+                        View(await _context.Softwares.Include(sw => sw.ProductImages).ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.Softwares'  is null.");
         }
 
         // GET: Softwares/Details/5
@@ -37,6 +32,7 @@ namespace NoThingStore.Controllers
             }
 
             var software = await _context.Softwares
+                .Include(sw => sw.ProductImages)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (software == null)
             {
@@ -55,6 +51,7 @@ namespace NoThingStore.Controllers
                 return NotFound();
             }
             var software = await _context.Softwares
+                .Include(sw => sw.ProductImages)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
             if (software == null)
             {
@@ -168,7 +165,7 @@ namespace NoThingStore.Controllers
             {
                 _context.Softwares.Remove(software);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

@@ -1,0 +1,29 @@
+﻿@model List<ProductImage>
+<div class="row m-sm-0">
+    <div class="col-sm-10 order-1 order-sm-1">
+        <div class="product-slider swiper">
+            <div class="swiper-wrapper">
+                @foreach (var productImage in Model)
+                {
+                    <div class="swiper-slide h-auto">
+                        <a class="glightbox product-view" href="@productImage.ImageUrl" data-gallery="gallery2" data-glightbox="Product item 1">
+                            <img class="img-fluid" src="@productImage.ImageUrl" alt="...">
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-10 order-2 order-sm-2" style="margin-top: 1px;">
+        <div class="product-slider-thumbs swiper">
+            <div class="swiper-wrapper">
+                @foreach (var productImage in Model)
+                {
+                    <div class="swiper-slide h-auto swiper-thumb-item mb-3">
+                        <img class="w-100" src="@productImage.ImageUrl" alt="...">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

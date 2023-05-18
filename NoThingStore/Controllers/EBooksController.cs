@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NoThingStore.Data;
 using NoThingStore.Models;
@@ -22,9 +17,9 @@ namespace NoThingStore.Controllers
         // GET: EBooks
         public async Task<IActionResult> Index()
         {
-              return _context.EBooks != null ? 
-                          View(await _context.EBooks.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.EBooks'  is null.");
+            return _context.EBooks != null ?
+                        View(await _context.EBooks.Include(eb => eb.ProductImages).ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.EBooks'  is null.");
         }
 
         // GET: EBooks/Details/5
@@ -37,6 +32,7 @@ namespace NoThingStore.Controllers
             }
 
             var eBook = await _context.EBooks
+                .Include(eb => eb.ProductImages)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (eBook == null)
             {
@@ -55,6 +51,7 @@ namespace NoThingStore.Controllers
                 return NotFound();
             }
             var eBook = await _context.EBooks
+                .Include(eb => eb.ProductImages)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
             if (eBook == null)
             {
@@ -168,7 +165,7 @@ namespace NoThingStore.Controllers
             {
                 _context.EBooks.Remove(eBook);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

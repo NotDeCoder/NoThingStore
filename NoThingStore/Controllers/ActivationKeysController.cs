@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NoThingStore.Data;
 using NoThingStore.Models;
@@ -22,8 +17,8 @@ namespace NoThingStore.Controllers
         // GET: ActivationKeys
         public async Task<IActionResult> Index()
         {
-              return _context.ActivationKeys != null ? 
-                          View(await _context.ActivationKeys.ToListAsync()) :
+            return _context.ActivationKeys != null ?
+                          View(await _context.ActivationKeys.Include(ak => ak.ProductImages).ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.ActivationKeys'  is null.");
         }
 
@@ -37,7 +32,9 @@ namespace NoThingStore.Controllers
             }
 
             var activationKey = await _context.ActivationKeys
+                .Include(ak => ak.ProductImages)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (activationKey == null)
             {
                 return NotFound();
@@ -55,6 +52,7 @@ namespace NoThingStore.Controllers
                 return NotFound();
             }
             var activationKey = await _context.ActivationKeys
+                .Include(ak => ak.ProductImages)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
             if (activationKey == null)
             {
@@ -167,7 +165,7 @@ namespace NoThingStore.Controllers
             {
                 _context.ActivationKeys.Remove(activationKey);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
