@@ -17,6 +17,7 @@ namespace NoThingStore.Data
         public DbSet<Software> Softwares { get; set; }
         public DbSet<VideoCourse> VideoCourses { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
 
         int _imageCounter = 0;
@@ -60,11 +61,17 @@ namespace NoThingStore.Data
                 .WithOne(pi => pi.Product)
                 .HasForeignKey(pi => pi.ProductId);
 
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.OrderItems)
+                .WithOne(oi => oi.Order)
+                .HasForeignKey(oi => oi.OrderId);
 
 
             // Use TPC inheritance strategy
 
             modelBuilder.Entity<Product>().UseTptMappingStrategy();
+
+            // Seed the database with random data
 
             modelBuilder.Entity<ActivationKey>().HasData(new List<ActivationKey>
             {

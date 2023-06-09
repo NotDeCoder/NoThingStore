@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NoThingStore.Models
 {
@@ -16,9 +17,8 @@ namespace NoThingStore.Models
         [EmailAddress(ErrorMessage = "Invalid email address.")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Total is required.")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Total must be greater than 0.")]
-        public decimal Total => OrderItems.Sum(oi => oi.Price * oi.Quantity);
+        [NotMapped]
+        public decimal Total => OrderItems != null && OrderItems.Count > 0 ? OrderItems.Sum(oi => oi.Price * oi.Quantity) : 0;
 
         [Required(ErrorMessage = "Order items are required.")]
         public List<OrderItem> OrderItems { get; set; }
