@@ -30,6 +30,11 @@ namespace NoThingStore.Services.Implementations
             return await _orderRepository.GetOrdersByUserIdAsync(userId);
         }
 
+        public async Task<bool> OrderExists(int id)
+        {
+            return await _orderRepository.OrderExists(id);
+        }
+
         public async Task CreateOrderAsync(Order order)
         {
             await _orderRepository.CreateOrderAsync(order);

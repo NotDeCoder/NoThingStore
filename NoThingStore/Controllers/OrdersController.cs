@@ -1,36 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NoThingStore.Data;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NoThingStore.Models;
+using NoThingStore.Services.Interfaces;
+using System.Data;
 
 namespace NoThingStore.Controllers
 {
+    [Authorize(Roles = "Admin, Manager")]
     public class OrdersController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IOrderService _orderService;
 
-        public OrdersController(ApplicationDbContext context)
+        public OrdersController(IOrderService orderService)
         {
-            _context = context;
+            _orderService = orderService;
         }
 
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            return _context.Orders != null ?
-                        View(await _context.Orders.ToListAsync()) :
-                        Problem("Entity set 'ApplicationDbContext.Orders'  is null.");
+            var orders = await _orderService.GetAllOrdersAsync();
+            return View(orders);
         }
 
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Orders == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.Orders.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
+            var order = await _orderService.GetOrderByIdAsync(id.Value);
 
             if (order == null)
             {
@@ -47,16 +48,13 @@ namespace NoThingStore.Controllers
         }
 
         // POST: Orders/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,OrderDate,Email")] Order order)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(order);
-                await _context.SaveChangesAsync();
+                await _orderService.CreateOrderAsync(order);
                 return RedirectToAction(nameof(Index));
             }
             return View(order);
@@ -65,12 +63,12 @@ namespace NoThingStore.Controllers
         // GET: Orders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Orders == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.Orders.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
+            var order = await _orderService.GetOrderByIdAsync(id.Value);
             if (order == null)
             {
                 return NotFound();
@@ -79,8 +77,6 @@ namespace NoThingStore.Controllers
         }
 
         // POST: Orders/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,OrderDate,Email,OrderItems")] Order order)
@@ -90,20 +86,13 @@ namespace NoThingStore.Controllers
                 return NotFound();
             }
 
-            foreach (var orderItem in order.OrderItems)
-            {
-                orderItem.Order = order;
-                orderItem.Product = await _context.Products.FindAsync(orderItem.ProductId);
-            }
-
             try
             {
-                _context.Update(order);
-                await _context.SaveChangesAsync();
+                await _orderService.UpdateOrderAsync(order);
             }
-            catch (DbUpdateConcurrencyException)
+            catch
             {
-                if (!OrderExists(order.Id))
+                if (!await _orderService.OrderExists(order.Id))
                 {
                     return NotFound();
                 }
@@ -116,18 +105,15 @@ namespace NoThingStore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-
         // GET: Orders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Orders == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.Orders
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var order = await _orderService.GetOrderByIdAsync(id.Value);
             if (order == null)
             {
                 return NotFound();
@@ -141,34 +127,26 @@ namespace NoThingStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Orders == null)
+            var order = await _orderService.GetOrderByIdAsync(id);
+            if (order == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Orders'  is null.");
-            }
-            var order = await _context.Orders.FindAsync(id);
-            if (order != null)
-            {
-                _context.Orders.Remove(order);
+                return NotFound();
             }
 
-            await _context.SaveChangesAsync();
+            await _orderService.DeleteOrderAsync(order);
+
             return RedirectToAction(nameof(Index));
         }
 
-        private bool OrderExists(int id)
-        {
-            return (_context.Orders?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-
         // GET: Orders/AddOrderItem/5
-        public IActionResult AddOrderItem(int? orderId)
+        public async Task<IActionResult> AddOrderItem(int? orderId)
         {
             if (orderId == null)
             {
                 return NotFound();
             }
 
-            var order = _context.Orders.Include(o => o.OrderItems).FirstOrDefault(o => o.Id == orderId);
+            var order = await _orderService.GetOrderByIdAsync(orderId.Value);
             if (order == null)
             {
                 return NotFound();
@@ -191,15 +169,16 @@ namespace NoThingStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                var order = await _context.Orders.FindAsync(orderId);
+                var order = await _orderService.GetOrderByIdAsync(orderId);
                 if (order == null)
                 {
                     return NotFound();
                 }
 
                 orderItem.Order = order;
-                _context.OrderItems.Add(orderItem);
-                await _context.SaveChangesAsync();
+                order.OrderItems.Add(orderItem);
+
+                await _orderService.UpdateOrderAsync(order);
 
                 return RedirectToAction(nameof(Edit), new { id = orderId });
             }
@@ -215,14 +194,20 @@ namespace NoThingStore.Controllers
                 return NotFound();
             }
 
-            var orderItem = await _context.OrderItems.FindAsync(orderItemId);
+            var order = await _orderService.GetOrderByIdAsync(orderId.Value);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var orderItem = order.OrderItems.FirstOrDefault(oi => oi.Id == orderItemId.Value);
             if (orderItem == null)
             {
                 return NotFound();
             }
 
-            _context.OrderItems.Remove(orderItem);
-            await _context.SaveChangesAsync();
+            order.OrderItems.Remove(orderItem);
+            await _orderService.UpdateOrderAsync(order);
 
             return RedirectToAction(nameof(Edit), new { id = orderId });
         }

@@ -29,6 +29,11 @@ namespace NoThingStore.Data.Repositories.Implementations
             return await _context.Orders.Include(o => o.OrderItems).Where(o => o.UserId == userId).ToListAsync();
         }
 
+        public async Task<bool> OrderExists(int id)
+        {
+            return await _context.Orders.AnyAsync(o => o.Id == id);
+        }
+
         public async Task CreateOrderAsync(Order order)
         {
             _context.Orders.Add(order);
