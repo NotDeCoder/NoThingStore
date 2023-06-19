@@ -2,7 +2,7 @@
 
 <h1>Edit User</h1>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("AddUserToRole", "Users"))
 {
     @Html.AntiForgeryToken()
 
@@ -13,19 +13,24 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Email">Email</label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
         <label asp-for="UserName">UserName</label>
         <input asp-for="UserName" class="form-control" />
         <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="form-group mt-3">
         <input type="submit" value="Save" class="btn btn-primary" />
         <a class="btn btn-secondary" href="@Url.Action("Index")">Cancel Changes</a>
     </div>
+
+    <hr />
+    <h1>Manage User Roles</h1>
+
+    <partial name="_ManageUsersRoles" model="Model" />
 }

@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model Microsoft.AspNetCore.Identity.IdentityUser
+@{
+    var userManager = Context.RequestServices.GetService<UserManager<IdentityUser>>();
+    var roleManager = Context.RequestServices.GetService<RoleManager<IdentityRole>>();
+    var userRoles = userManager.GetRolesAsync(Model).Result;
+    var allRoles = roleManager.Roles.ToList();
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Role Name</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in userRoles)
+        {
+            <tr>
+                <td>
+                    @role
+                </td>
+                <td>
+                    <a class="btn btn-danger remove-button" href="@Url.Action("RemoveUserFromRole", "Roles",
+                        new { userId = Model.Id, roleId = roleManager.Roles.Single(r => r.Name == role).Id })">Remove</a>
+                </td>
+                <td>
+                    <a class="btn btn-info" href="@Url.Action("ManageUsers", "Roles",
+                        new { id = roleManager.Roles.Single(r => r.Name == role).Id })">Users with same role</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form method="post" action="@Url.Action("AddUserToRole", "Roles")">
+    <input type="hidden" name="userId" value="@Model.Id" />
+    <div class="form-group">
+        <label for="role">Role:</label>
+        <select class="form-control" id="role" name="roleId">
+            @foreach (var role in allRoles)
+            {
+                <option value="@role.Id">@role.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Role</button>
+</form>
+

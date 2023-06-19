@@ -19,9 +19,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+    options.User.RequireUniqueEmail = true;
+})
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();
 
@@ -109,7 +113,31 @@ using (var scope = app.Services.CreateScope())
         await userManager.CreateAsync(admin, adminPassword);
 
         await userManager.AddToRoleAsync(admin, "Admin");
+
+        await userManager.AddToRoleAsync(admin, "Manager");
+
+        await userManager.AddToRoleAsync(admin, "Customer");
     }
 }
+
+app.Use(async (context, next) =>
+{
+    var userManager = context.RequestServices.GetRequiredService<UserManager<IdentityUser>>();
+
+    if (context.User.Identity.IsAuthenticated)
+    {
+        var user = await userManager.GetUserAsync(context.User);
+        if (user != null)
+        {
+            var isInRole = await userManager.IsInRoleAsync(user, "Customer");
+            if (!isInRole)
+            {
+                await userManager.AddToRoleAsync(user, "Customer");
+            }
+        }
+    }
+
+    await next.Invoke();
+});
 
 app.Run();

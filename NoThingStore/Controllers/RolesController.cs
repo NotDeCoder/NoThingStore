@@ -8,10 +8,12 @@ namespace NoThingStore.Controllers
     public class RolesController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public RolesController(RoleManager<IdentityRole> roleManager)
+        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
         {
             _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -20,69 +22,44 @@ namespace NoThingStore.Controllers
             return View(roles);
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(IdentityRole role)
-        {
-            if (ModelState.IsValid)
-            {
-                await _roleManager.CreateAsync(role);
-                return RedirectToAction("Index");
-            }
-            return View(role);
-        }
-
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> ManageUsers(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
-            if (role == null)
+            
+            // Get IdentityUsers in this role
+            var users = new List<IdentityUser>();
+            foreach (var user in _userManager.Users)
             {
-                return NotFound();
+                if (await _userManager.IsInRoleAsync(user, role.Name))
+                {
+                    users.Add(user);
+                }
             }
-            return View(role);
+
+            // Pass role and users to view
+            ViewBag.Role = role;
+
+            return View("~/Views/Users/Index.cshtml", users);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(string id, IdentityRole role)
+        public async Task<IActionResult> AddUserToRole(string userId, string roleId)
         {
-            if (id != role.Id)
-            {
-                return NotFound();
-            }
+            var user = await _userManager.FindByIdAsync(userId);
+            var role = await _roleManager.FindByIdAsync(roleId);
 
-            if (ModelState.IsValid)
-            {
-                var existingRole = await _roleManager.FindByIdAsync(id);
-                existingRole.Name = role.Name;
-                await _roleManager.UpdateAsync(existingRole);
-                return RedirectToAction("Index");
-            }
-            return View(role);
+            await _userManager.AddToRoleAsync(user, role.Name);
+
+            return RedirectToAction("Edit", "Users", new { id = userId });
         }
 
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> RemoveUserFromRole(string userId, string roleId)
         {
-            var role = await _roleManager.FindByIdAsync(id);
-            if (role == null)
-            {
-                return NotFound();
-            }
-            return View(role);
-        }
+            var user = await _userManager.FindByIdAsync(userId);
+            var role = await _roleManager.FindByIdAsync(roleId);
 
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var role = await _roleManager.FindByIdAsync(id);
-            if (role != null)
-            {
-                await _roleManager.DeleteAsync(role);
-            }
-            return RedirectToAction("Index");
+            await _userManager.RemoveFromRoleAsync(user, role.Name);
+
+            return RedirectToAction("Edit", "Users", new { id = userId });
         }
     }
 }
