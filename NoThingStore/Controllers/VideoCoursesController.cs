@@ -61,6 +61,8 @@ namespace NoThingStore.Controllers
         }
 
         // GET: VideoCourses/Create
+        [HttpGet]
+        [Route("VideoCourses/Create")]
         public IActionResult Create()
         {
             return View();
@@ -71,7 +73,8 @@ namespace NoThingStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CountOfVideos,Format,Duration,Language,DownloadUrl,Id,Name,Slug,ShortDescription,LongDescription,Price,IsAvailable")] VideoCourse videoCourse)
+        [Route("VideoCourses/Create")]
+        public async Task<IActionResult> Create(VideoCourse videoCourse)
         {
             if (ModelState.IsValid)
             {

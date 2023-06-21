@@ -1,6 +1,3 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NoThingStore.Data;
@@ -74,11 +71,6 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "product_create",
-    pattern: "{controller}/Create",
-    defaults: new { controller = "{controller}", action = "Create" });
 
 app.MapControllerRoute(
     name: "default",

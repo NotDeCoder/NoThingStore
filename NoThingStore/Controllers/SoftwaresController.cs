@@ -61,6 +61,8 @@ namespace NoThingStore.Controllers
         }
 
         // GET: Softwares/Create
+        [HttpGet]
+        [Route("Softwares/Create")]
         public IActionResult Create()
         {
             return View();
@@ -71,7 +73,8 @@ namespace NoThingStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MegabyteSize,HowToInstall,SystemRequirement,Authorship,DownloadUrl,Id,Name,Slug,ShortDescription,LongDescription,Price,IsAvailable")] Software software)
+        [Route("Softwares/Create")]
+        public async Task<IActionResult> Create(Software software)
         {
             if (ModelState.IsValid)
             {

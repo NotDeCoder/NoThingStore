@@ -63,17 +63,18 @@ namespace NoThingStore.Controllers
         }
 
         // GET: ActivationKeys/Create
+        [HttpGet]
+        [Route("ActivationKeys/Create")]
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: ActivationKeys/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Key,TargetProgramName,ProgramVersion,ExpirationDate,HowToActivate,Id,Name,Slug,ShortDescription,LongDescription,Price,IsAvailable")] ActivationKey activationKey)
+        [Route("ActivationKeys/Create")]
+        public async Task<IActionResult> Create(ActivationKey activationKey)
         {
             if (ModelState.IsValid)
             {

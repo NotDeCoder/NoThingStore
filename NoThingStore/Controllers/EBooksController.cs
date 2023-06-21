@@ -61,6 +61,8 @@ namespace NoThingStore.Controllers
         }
 
         // GET: EBooks/Create
+        [HttpGet]
+        [Route("EBooks/Create")]
         public IActionResult Create()
         {
             return View();
@@ -71,7 +73,8 @@ namespace NoThingStore.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MegabyteSize,Authorship,Format,CountOfPages,DownloadUrl,Id,Name,Slug,ShortDescription,LongDescription,Price,IsAvailable")] EBook eBook)
+        [Route("EBooks/Create")]
+        public async Task<IActionResult> Create(EBook eBook)
         {
             if (ModelState.IsValid)
             {

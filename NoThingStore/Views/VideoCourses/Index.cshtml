@@ -6,6 +6,11 @@
 
 <h1>Video Courses</h1>
 
+@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+{
+    <a asp-action="Create">Create New</a>
+}
+
 <div class="row">
     @foreach (var product in Model)
     {
