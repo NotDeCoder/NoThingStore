@@ -1,0 +1,14 @@
+﻿@model NoThingStore.Models.Product
+
+@using (Html.BeginForm("AddImageToProduct", "Products", FormMethod.Post))
+{
+    @Html.Hidden("productId", Model.Id)
+
+    <div class="form-group">
+        @Html.Label("url", "Image URL")
+        @Html.TextBox("url", null, new { @class = "form-control" })
+        @Html.ValidationMessage("url")
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Image</button>
+}

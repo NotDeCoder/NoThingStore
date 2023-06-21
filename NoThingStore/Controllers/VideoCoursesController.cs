@@ -138,6 +138,7 @@ namespace NoThingStore.Controllers
         }
 
         // GET: VideoCourses/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.VideoCourses == null)
@@ -156,9 +157,9 @@ namespace NoThingStore.Controllers
         }
 
         // POST: VideoCourses/Delete/5
-        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
         {
             if (_context.VideoCourses == null)
             {

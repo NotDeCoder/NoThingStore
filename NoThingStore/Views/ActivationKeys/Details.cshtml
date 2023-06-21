@@ -53,6 +53,13 @@
             <li class="nav-item"><a class="nav-link text-uppercase active" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a></li>
             <li class="nav-item"><a class="nav-link text-uppercase" id="activation-tab" data-bs-toggle="tab" href="#activation" role="tab" aria-controls="activation" aria-selected="false">How to activate</a></li>
             <li class="nav-item"><a class="nav-link text-uppercase" id="specification-tab" data-bs-toggle="tab" href="#specification" role="tab" aria-controls="specification" aria-selected="false">Specification</a></li>
+            <!-- If role == admin or manager - Show Edit and Delete links -->
+
+            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+            {
+                <li class="nav-item"><a asp-action="Edit" asp-route-id="@Model.Id" style="text-decoration: none;" class="nav-link text-uppercase" aria-selected="false">Edit</a></li>
+                <li class="nav-item"><a asp-action="Delete" asp-route-id="@Model.Id" style="text-decoration: none;" class="nav-link text-uppercase" aria-selected="false">Delete</a></li>
+            }
         </ul>
         <div class="tab-content mb-5" id="myTabContent">
             <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">

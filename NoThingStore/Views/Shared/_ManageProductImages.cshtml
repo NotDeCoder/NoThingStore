@@ -30,16 +30,14 @@
                 <input type="hidden" asp-for="ProductImages[i].ProductId" value="@Model.ProductImages[i].ProductId" />
                 <input type="hidden" asp-for="ProductImages[i].Product" value="@Model.ProductImages[i].Product">
                 <td>
-                    <a class="btn btn-danger remove-button" href="@Url.Action("RemoveProductImage", "Products", new { id = Model.ProductImages[i].Id })">Remove</a>
+                    <a class="btn btn-danger remove-button" href="@Url.Action("RemoveImageFromProduct", "Products", new { id = Model.ProductImages[i].Id })">Remove</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<div class="form-group">
-    <a class="btn btn-success" href="@Url.Action("AddProductImage", new { orderId = Model.Id })">Add Order Item</a>
-</div>
+<partial name="_AddImageToProductPartial" model="Model" />
 
 <br />
 

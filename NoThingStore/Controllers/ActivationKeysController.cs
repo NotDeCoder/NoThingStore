@@ -140,6 +140,7 @@ namespace NoThingStore.Controllers
         }
 
         // GET: ActivationKeys/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.ActivationKeys == null)
@@ -159,7 +160,8 @@ namespace NoThingStore.Controllers
 
         // POST: ActivationKeys/Delete/5
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
         {
             if (_context.ActivationKeys == null)
             {
