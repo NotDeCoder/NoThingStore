@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NoThingStore.Data.Repositories.Interfaces;
 using NoThingStore.Models;
-using System.Linq;
 
 namespace NoThingStore.Data.Repositories.Implementations
 {

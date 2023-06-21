@@ -18,7 +18,7 @@ namespace NoThingStore.Models
         public string ProgramVersion { get; set; }
 
         [Required(ErrorMessage = "The ExpirationDate field is required.")]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         [DataType(DataType.Date)]
         public DateTime ExpirationDate { get; set; }
 

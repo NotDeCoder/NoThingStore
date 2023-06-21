@@ -1,0 +1,46 @@
+﻿@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+<ul class="nav nav-pills flex-column">
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a>
+    </li>
+
+    @if (hasExternalLogins)
+    {
+        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
+    }
+
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="orders" href="@Url.Action("ManageOrders", "Orders")">Your Orders</a>
+    </li>
+    @{
+        if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+        {
+            <li class="nav-item">
+                <a class="nav-link" id="manage-users" href="@Url.Action("Index", "Users")">Manage Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="manage-orders" href="@Url.Action("Index", "Orders")">Manage Orders</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="manage-products" href="@Url.Action("Index", "Home")">Manage Products</a>
+            </li>
+        }
+    }
+</ul>

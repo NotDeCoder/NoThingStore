@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NoThingStore.Data;
 using NoThingStore.Models;
+using NoThingStore.Services.Interfaces;
 
 namespace NoThingStore.Controllers
 {
@@ -91,11 +92,15 @@ namespace NoThingStore.Controllers
                 return NotFound();
             }
 
-            var activationKey = await _context.ActivationKeys.FindAsync(id);
+            var activationKey = await _context.ActivationKeys
+               .Include(ak => ak.ProductImages)
+               .FirstOrDefaultAsync(m => m.Id == id);
+
             if (activationKey == null)
             {
                 return NotFound();
             }
+
             return View(activationKey);
         }
 

@@ -6,33 +6,33 @@ namespace NoThingStore.Data.Repositories.Implementations
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly ApplicationDbContext _dbContext;
-        public ProductRepository(ApplicationDbContext dbContext)
+        private readonly ApplicationDbContext _context;
+        public ProductRepository(ApplicationDbContext context)
         {
-            _dbContext = dbContext;
+            _context = context;
         }
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            return await _dbContext.Products.ToListAsync();
+            return await _context.Products.ToListAsync();
         }
         public async Task<Product> GetProductByIdAsync(int id)
         {
-            return await _dbContext.Products.FindAsync(id);
+            return await _context.Products.Include(p => p.ProductImages).FirstOrDefaultAsync(p => p.Id == id);
         }
         public async Task CreateProductAsync(Product product)
         {
-            await _dbContext.Products.AddAsync(product);
-            await _dbContext.SaveChangesAsync();
+            await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
         }
         public async Task UpdateProductAsync(Product product)
         {
-            _dbContext.Products.Update(product);
-            await _dbContext.SaveChangesAsync();
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
         }
         public async Task DeleteProductAsync(Product product)
         {
-            _dbContext.Products.Remove(product);
-            await _dbContext.SaveChangesAsync();
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
         }
     }
 }

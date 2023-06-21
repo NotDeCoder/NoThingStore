@@ -1,4 +1,12 @@
 ﻿@model Product
+@{
+    if (Model.ProductImages.Count == 0)
+    {
+        ProductImage noImageProductImage = new ProductImage();
+        noImageProductImage.ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg";
+        Model.ProductImages.Add(noImageProductImage);
+    }
+}
 <div class="col-lg-4 col-md-6 mb-4">
     <div class="card @(!Model.IsAvailable ? "disabled-card" : "")">
         <a asp-action="Details" asp-route-slug="@Model.Slug" style="text-decoration: none;">

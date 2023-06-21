@@ -25,8 +25,8 @@ namespace NoThingStore.Data
 
         private ProductImage GenerateRandomImage(Random random, int productId)
         {
-            int width = random.Next(800, 1920);
-            int height = random.Next(600, 1080);
+            int width = random.Next(3000, 4000);
+            int height = random.Next(3000, 4000);
             string backgroundColor = string.Format("{0:X6}", random.Next(0x1000000));
             string textColor = string.Format("{0:X6}", random.Next(0x1000000));
 
@@ -42,7 +42,7 @@ namespace NoThingStore.Data
         private List<ProductImage> GenerateRandomListOfImages(Random random, int productId)
         {
             List<ProductImage> productImages = new();
-            int numberOfImages = random.Next(3, 10);
+            int numberOfImages = random.Next(3, 7);
             for (int i = 0; i < numberOfImages; i++)
             {
                 productImages.Add(GenerateRandomImage(random, productId));
@@ -96,7 +96,7 @@ namespace NoThingStore.Data
                     ShortDescription = "Access to all Adobe Creative Cloud apps",
                     LongDescription = "Adobe Creative Cloud All Apps is a subscription plan that gives you access to all Adobe Creative Cloud apps, including Photoshop, Illustrator, InDesign, Premiere Pro, Acrobat Pro DC, and more. It is a one-year subscription that does not receive feature updates.",
                     Price = 599.99m,
-                    IsAvailable = true,
+                    IsAvailable = false,
                     Key = "WXYZ-5678-IJKL-9012",
                     TargetProgramName = "Adobe Creative Cloud",
                     ProgramVersion = "2022",
@@ -329,7 +329,7 @@ namespace NoThingStore.Data
 
             List<ProductImage> productImages = new();
 
-            for (int i = 1; i <= 17; i++)
+            for (int i = 3; i <= 17; i++)
             {
                 productImages.AddRange(GenerateRandomListOfImages(_random, i));
             }

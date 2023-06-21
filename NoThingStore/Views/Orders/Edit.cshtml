@@ -52,7 +52,7 @@
                 <tr>
                     <td>
                         <input type="hidden" asp-for="OrderItems[i].Id" />
-                        <input asp-for="OrderItems[i].Name" class="form-control" />
+                        <input asp-for="OrderItems[i].Name" class="form-control" readonly />
                         <span asp-validation-for="OrderItems[i].Name" class="text-danger"></span>
                     </td>
                     <td>

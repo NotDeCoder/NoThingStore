@@ -90,11 +90,15 @@ namespace NoThingStore.Controllers
                 return NotFound();
             }
 
-            var eBook = await _context.EBooks.FindAsync(id);
+            var eBook = await _context.EBooks
+                .Include(eb => eb.ProductImages)
+                .FirstOrDefaultAsync(eb => eb.Id == id);
+
             if (eBook == null)
             {
                 return NotFound();
             }
+
             return View(eBook);
         }
 

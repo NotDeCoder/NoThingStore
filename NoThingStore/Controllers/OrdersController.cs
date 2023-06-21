@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using NoThingStore.Models;
 using NoThingStore.Services.Interfaces;
-using System.Data;
+using System.Security.Claims;
 
 namespace NoThingStore.Controllers
 {
-    [Authorize(Roles = "Admin, Manager")]
     public class OrdersController : Controller
     {
         private readonly IOrderService _orderService;
@@ -22,6 +20,14 @@ namespace NoThingStore.Controllers
             var orders = await _orderService.GetAllOrdersAsync();
             return View(orders);
         }
+
+        public async Task<IActionResult> ManageOrders()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var orders = await _orderService.GetOrdersByUserIdAsync(userId);
+            return View(orders);
+        }
+
 
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)

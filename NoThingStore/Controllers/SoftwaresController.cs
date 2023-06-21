@@ -90,11 +90,15 @@ namespace NoThingStore.Controllers
                 return NotFound();
             }
 
-            var software = await _context.Softwares.FindAsync(id);
+            var software = await _context.Softwares
+                .Include(sw => sw.ProductImages)
+                .FirstOrDefaultAsync(sw => sw.Id == id);
+
             if (software == null)
             {
                 return NotFound();
             }
+
             return View(software);
         }
 

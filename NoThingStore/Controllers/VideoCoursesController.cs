@@ -90,11 +90,15 @@ namespace NoThingStore.Controllers
                 return NotFound();
             }
 
-            var videoCourse = await _context.VideoCourses.FindAsync(id);
+            var videoCourse = await _context.VideoCourses
+                .Include(vc => vc.ProductImages)
+                .FirstOrDefaultAsync(vc => vc.Id == id);
+            
             if (videoCourse == null)
             {
                 return NotFound();
             }
+
             return View(videoCourse);
         }
 

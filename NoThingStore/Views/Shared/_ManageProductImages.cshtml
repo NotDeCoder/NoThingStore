@@ -1,0 +1,59 @@
+﻿@model NoThingStore.Models.Product
+<br />
+
+<h4>Product Images</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>URL</th>
+            <th>Image</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.ProductImages.Count; i++)
+        {
+            <tr>
+                <td>
+                    <input type="hidden" asp-for="ProductImages[i].Id" />
+                    <p readonly>@Model.ProductImages[i].Id</p>
+                </td>
+                <td>
+                    <input asp-for="ProductImages[i].ImageUrl" class="form-control" readonly />
+                    <span asp-validation-for="ProductImages[i].ImageUrl" class="text-danger"></span>
+                </td>
+                <td>
+                    <img src="@Model.ProductImages[i].ImageUrl" height="75" >
+                </td>
+                <input type="hidden" asp-for="ProductImages[i].ProductId" value="@Model.ProductImages[i].ProductId" />
+                <input type="hidden" asp-for="ProductImages[i].Product" value="@Model.ProductImages[i].Product">
+                <td>
+                    <a class="btn btn-danger remove-button" href="@Url.Action("RemoveProductImage", "Products", new { id = Model.ProductImages[i].Id })">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="form-group">
+    <a class="btn btn-success" href="@Url.Action("AddProductImage", new { orderId = Model.Id })">Add Order Item</a>
+</div>
+
+<br />
+
+<script>
+    // Обработчик события для кнопки "Remove"
+    $('.remove-button').on('click', function (e) {
+        e.preventDefault();
+
+        var removeUrl = $(this).attr('href');
+
+        // Отобразить модальное окно подтверждения удаления
+        if (confirm('Are you sure you want to delete this Image from this Product?')) {
+            // Если пользователь нажал "Yes", выполнить удаление
+            window.location.href = removeUrl;
+        }
+    });
+</script>

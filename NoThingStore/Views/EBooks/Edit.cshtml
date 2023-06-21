@@ -45,7 +45,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Slug" class="control-label"></label>
-                <input asp-for="Slug" class="form-control" />
+                <input asp-for="Slug" class="form-control" readonly />
                 <span asp-validation-for="Slug" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -74,6 +74,8 @@
         </form>
     </div>
 </div>
+
+<partial name="_ManageProductImages" model="Model" />
 
 <div>
     <a asp-action="Index">Back to List</a>
