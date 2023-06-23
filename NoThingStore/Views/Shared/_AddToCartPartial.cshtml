@@ -3,7 +3,7 @@
 
 @model Product
 <h1>@Html.DisplayFor(model => model.Name)</h1>
-<p class="text-muted lead">@Html.DisplayFor(model => model.Price) $</p>
+<p class="text-muted lead">@Html.DisplayFor(model => model.Price)</p>
 <p class="text-sm mb-4">@Html.DisplayFor(model => model.ShortDescription)</p>
 <div class="row align-items-stretch mb-4">
     @if (Model.IsAvailable)

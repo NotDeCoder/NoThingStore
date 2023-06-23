@@ -18,6 +18,7 @@ namespace NoThingStore.Models
         public string Email { get; set; }
 
         [NotMapped]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Total => OrderItems != null && OrderItems.Count > 0 ? OrderItems.Sum(oi => oi.Price * oi.Quantity) : 0;
 
         [Required(ErrorMessage = "Order items are required.")]

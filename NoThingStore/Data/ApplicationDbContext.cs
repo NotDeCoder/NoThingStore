@@ -26,7 +26,7 @@ namespace NoThingStore.Data
         private ProductImage GenerateRandomImage(Random random, int productId)
         {
             int width = random.Next(3000, 4000);
-            int height = random.Next(3000, 4000);
+            int height = random.Next(1800, 2500);
             string backgroundColor = string.Format("{0:X6}", random.Next(0x1000000));
             string textColor = string.Format("{0:X6}", random.Next(0x1000000));
 
@@ -67,7 +67,7 @@ namespace NoThingStore.Data
                 .HasForeignKey(oi => oi.OrderId);
 
 
-            // Use TPC inheritance strategy
+            // Use TPT inheritance strategy
 
             modelBuilder.Entity<Product>().UseTptMappingStrategy();
 

@@ -1,4 +1,6 @@
-﻿using Slugify;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.AspNetCore.Mvc;
+using Slugify;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -44,6 +46,7 @@ namespace NoThingStore.Models
 
         [Required(ErrorMessage = "The Price field is required.")]
         [Range(0.01, 1000000, ErrorMessage = "The Price field must be between 0.01 and 1 000 000.")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Price { get; set; }
 
         [Display(Name = "Is Available")]

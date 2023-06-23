@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +34,25 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
-    var supportedCultures = new[] { new CultureInfo("uk"), new CultureInfo("en") };
+    var ukCulture = new CultureInfo("uk");
+    ukCulture.DateTimeFormat.ShortDatePattern = "dd.MM.yyyy";
+    ukCulture.DateTimeFormat.DateSeparator = ".";
+    ukCulture.DateTimeFormat.ShortTimePattern = "HH:mm";
+    ukCulture.DateTimeFormat.TimeSeparator = ":";
+    ukCulture.NumberFormat.NumberDecimalSeparator = ".";
+    ukCulture.NumberFormat.NumberGroupSeparator = " ";
+    ukCulture.NumberFormat.CurrencySymbol = "$";
+
+    var enCulture = new CultureInfo("en-US");
+    enCulture.DateTimeFormat.ShortDatePattern = "MM/dd/yyyy";
+    enCulture.DateTimeFormat.DateSeparator = "/";
+    enCulture.DateTimeFormat.ShortTimePattern = "HH:mm";
+    enCulture.DateTimeFormat.TimeSeparator = ":";
+    enCulture.NumberFormat.NumberDecimalSeparator = ".";
+    enCulture.NumberFormat.NumberGroupSeparator = ",";
+
+
+    var supportedCultures = new[] { ukCulture, enCulture };
     options.DefaultRequestCulture = new RequestCulture("uk");
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;

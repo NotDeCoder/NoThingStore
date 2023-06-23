@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NoThingStore.Models;
-using NoThingStore.Services.Implementations;
 using NoThingStore.Services.Interfaces;
-using System.Data;
+using System.Security.Claims;
 
 namespace NoThingStore.Controllers
 {
@@ -48,16 +46,17 @@ namespace NoThingStore.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(string id, IdentityUser editedUser)
         {
-            if (id != editedUser.Id)
+
+            var dbUser = await _userService.GetUserByIdAsync(id);
+            if (dbUser == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            var result = await _userService.UpdateUserAsync(editedUser);
-            if (!result.Succeeded)
-            {
-                return View(editedUser);
-            }
+            dbUser.Email = editedUser.Email;
+            dbUser.UserName = editedUser.Email;
+
+            await _userService.UpdateUserAsync(dbUser);
 
             return RedirectToAction(nameof(Index));
         }

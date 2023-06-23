@@ -2,7 +2,7 @@
 
 <h1>Edit User</h1>
 
-@using (Html.BeginForm("AddUserToRole", "Users"))
+@using (Html.BeginForm("Edit", "Users"))
 {
     @Html.AntiForgeryToken()
 
@@ -28,9 +28,15 @@
         <input type="submit" value="Save" class="btn btn-primary" />
         <a class="btn btn-secondary" href="@Url.Action("Index")">Cancel Changes</a>
     </div>
+}
 
-    <hr />
-    <h1>Manage User Roles</h1>
+<hr />
+<h1>Manage User Roles</h1>
 
-    <partial name="_ManageUsersRoles" model="Model" />
+<partial name="_ManageUsersRoles" model="Model" />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

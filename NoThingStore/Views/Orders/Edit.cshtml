@@ -12,13 +12,27 @@
 
     <div class="form-group">
         <label asp-for="UserId">User ID</label>
-        <input asp-for="UserId" class="form-control" />
+        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+        {
+            <input asp-for="UserId" class="form-control" />
+        }
+        else
+        {
+            <input asp-for="UserId" class="form-control" readonly />
+        }
         <span asp-validation-for="UserId" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="OrderDate">Order Date</label>
-        <input asp-for="OrderDate" class="form-control" />
+        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+        {
+            <input asp-for="OrderDate" class="form-control" />
+        }
+        else
+        {
+            <input asp-for="OrderDate" class="form-control" readonly/>
+        }
         <span asp-validation-for="OrderDate" class="text-danger"></span>
     </div>
 
@@ -60,7 +74,14 @@
                         <span asp-validation-for="OrderItems[i].Quantity" class="text-danger"></span>
                     </td>
                     <td>
-                        <input asp-for="OrderItems[i].Price" class="form-control" min="0.01" />
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
+                            <input asp-for="OrderItems[i].Price" class="form-control" />
+                        }
+                        else
+                        {
+                            <input asp-for="OrderItems[i].Price" class="form-control" readonly />
+                        }
                         <span asp-validation-for="OrderItems[i].Price" class="text-danger"></span>
                     </td>
                     <input type="hidden" asp-for="OrderItems[i].OrderId" value="@Model.Id" />

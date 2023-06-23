@@ -37,7 +37,7 @@
 </table>
 
 <div>
-    <p>@Localizer["Total"]: @Model.Total</p>
+    <p>@Localizer["Total"]: @Html.DisplayFor(Model => Model.Total)</p>
     <a href="@Url.Action("ClearCart", "Cart")">@Localizer["Clear Cart"]</a>
 </div>
 

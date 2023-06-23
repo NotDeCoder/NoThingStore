@@ -11,7 +11,7 @@ namespace NoThingStore.Models
         public string Name { get; set; }
 
         [Required]
-        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         [Range(0.01, (double)decimal.MaxValue, ErrorMessage = "Price must be at least 0.01")]
 
         public decimal Price { get; set; }
