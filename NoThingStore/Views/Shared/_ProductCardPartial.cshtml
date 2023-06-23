@@ -1,4 +1,7 @@
-﻿@model Product
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model Product
 @{
     if (Model.ProductImages.Count == 0)
     {
@@ -18,10 +21,10 @@
                 <h5 class="card-title">@Model.Name</h5>
             </a>
             <p class="card-text">@Model.ShortDescription</p>
-            <h6 class="card-price">Price: $@Model.Price</h6>
+            <h6 class="card-price">@Localizer["Price"]: $@Model.Price</h6>
             <form asp-controller="Cart" asp-action="AddToCart" method="post">
                 <input type="hidden" name="productId" value="@Model.Id" />
-                <button type="submit" class="btn btn-primary" @(!Model.IsAvailable ? "disabled" : "")>Buy Now</button>
+                <button type="submit" class="btn btn-primary" @(!Model.IsAvailable ? "disabled" : "")>@Localizer["Buy Now"]</button>
             </form>
         </div>
     </div>

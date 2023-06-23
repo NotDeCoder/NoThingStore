@@ -1,11 +1,14 @@
-﻿<link rel="stylesheet" href="~/lib/swiper/swiper-bundle.min.css" />
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model NoThingStore.Models.ActivationKey
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<link rel="stylesheet" href="~/lib/swiper/swiper-bundle.min.css" />
 <link rel="stylesheet" href="~/lib/glightbox/css/glightbox.min.css" />
 <script src="~/js/front.js"></script>
-
-@model NoThingStore.Models.ActivationKey
-@{
-    ViewData["Title"] = "Details";
-}
 
 <section class="py-5">
     <div class="container">
@@ -17,28 +20,22 @@
                 <div class="col-lg-6">
                     <partial name="_AddToCartPartial" />
 
-                    <h6 class="text-uppercase">Short Specification </h6>
+                    <h6 class="text-uppercase">@Localizer["ShortSpecification"]</h6>
                     <dl class="row">
                         <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.Id)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.Id)
-                        </dd>
-                        <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.TargetProgramName)
+                            @Localizer["TargetProgramName"]
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.TargetProgramName)
                         </dd>
                         <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.ProgramVersion)
+                            @Localizer["ProgramVersion"]
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.ProgramVersion)
                         </dd>
                         <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.ExpirationDate)
+                            @Localizer["ExpirationDate"]
                         </dt>
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.ExpirationDate)

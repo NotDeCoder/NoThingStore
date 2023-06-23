@@ -1,19 +1,20 @@
-﻿@model IEnumerable<NoThingStore.Models.Software>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Softwares";
+    ViewData["Title"] = @Localizer["Title"];
 }
 
-<h1>Softwares</h1>
+<h1>@Localizer["Title"]</h1>
 
 @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
 {
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Localizer["Create New"]</a>
 }
 
 <div class="row">
     @foreach (var product in Model)
     {
-        @Html.Partial("_ProductCard", product)
+        <partial name="_ProductCardPartial" model="@product" />
     }
 </div>

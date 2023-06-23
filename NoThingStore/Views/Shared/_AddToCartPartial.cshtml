@@ -1,22 +1,25 @@
-﻿@model Product
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model Product
 <h1>@Html.DisplayFor(model => model.Name)</h1>
 <p class="text-muted lead">@Html.DisplayFor(model => model.Price) $</p>
 <p class="text-sm mb-4">@Html.DisplayFor(model => model.ShortDescription)</p>
 <div class="row align-items-stretch mb-4">
     @if (Model.IsAvailable)
     {
-        <h5><span class="badge text-success" style="background-color: #b8e994;">✓ In stock</span></h5>
+        <h5><span class="badge text-success" style="background-color: #b8e994;">@Localizer["In stock"]</span></h5>
         <form action="/Cart/AddToCart" method="post">
             <input type="hidden" name="productId" value="@Model.Id" />
             <input type="hidden" name="name" value="@Model.Name" />
             <input type="hidden" name="price" value="@Model.Price" />
             <input type="number" name="quantity" value="1" min="1" max="100" />
-            <button type="submit" class="btn btn-primary col-5">Add to Cart</button>
+            <button type="submit" class="btn btn-primary col-5">@Localizer["Add to Cart"]</button>
         </form>
     }
     else
     {
-        <p class="text-danger"><span style="color: crimson;">Out of stock</span></p>
-        <button class="btn btn-secondary col-5" disabled>Add to Cart</button>
+        <p class="text-danger"><span style="color: crimson;">@Localizer["Out of stock"]</span></p>
+        <button class="btn btn-secondary col-5" disabled>@Localizer["Add to Cart"]</button>
     }
 </div>

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using NoThingStore.Data;
 using NoThingStore.Data.Repositories.Implementations;
@@ -6,6 +8,7 @@ using NoThingStore.Data.Repositories.Interfaces;
 using NoThingStore.Models;
 using NoThingStore.Services.Implementations;
 using NoThingStore.Services.Interfaces;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +27,18 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
+
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[] { new CultureInfo("uk"), new CultureInfo("en") };
+    options.DefaultRequestCulture = new RequestCulture("uk");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
 
 builder.Services.AddSingleton<ShoppingCart>();
 
@@ -61,6 +75,8 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseRequestLocalization();
 
 app.UseSession();
 

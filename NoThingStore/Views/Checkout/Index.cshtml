@@ -1,2 +1,12 @@
-﻿<h2>Your order has been completed</h2>
-<p>Thank you for shopping with us!</p>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model NoThingStore.Models.ShoppingCart
+
+@{
+    ViewData["Title"] = @Localizer["Title"];
+}
+
+<h1>@Localizer["Title"]</h1>
+
+<h2>@Localizer["OrderCompleted"]</h2>
+<p>@Localizer["Thank"]</p>

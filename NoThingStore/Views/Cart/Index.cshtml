@@ -1,13 +1,19 @@
-﻿@model NoThingStore.Models.ShoppingCart
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model NoThingStore.Models.ShoppingCart
 
-<h1>Cart</h1>
+@{
+    ViewData["Title"] = @Localizer["Title"];
+}
+
+<h1>@Localizer["Title"]</h1>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Product Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
+            <th>@Localizer["Product Name"]</th>
+            <th>@Localizer["Price"]</th>
+            <th>@Localizer["Quantity"]</th>
             <th></th>
         </tr>
     </thead>
@@ -24,18 +30,18 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
-                <td><a href="@Url.Action("RemoveFromCart", "Cart", new { productId = item.ProductId })">Remove</a></td>
+                <td><a href="@Url.Action("RemoveFromCart", "Cart", new { productId = item.ProductId })">@Localizer["Remove"]</a></td>
             </tr>
         }
     </tbody>
 </table>
 
 <div>
-    <p>Total: @Model.Total</p>
-    <a href="@Url.Action("ClearCart", "Cart")">Clear Cart</a>
+    <p>@Localizer["Total"]: @Model.Total</p>
+    <a href="@Url.Action("ClearCart", "Cart")">@Localizer["Clear Cart"]</a>
 </div>
 
 <div>
-    <a href="@Url.Action("Index", "Home")">Continue Shopping</a>
-    <a href="@Url.Action("Index", "Checkout")">Checkout</a>
+    <a href="@Url.Action("Index", "Home")">@Localizer["Continue Shopping"]</a>
+    <a href="@Url.Action("Index", "Checkout")">@Localizer["Checkout"]</a>
 </div>
